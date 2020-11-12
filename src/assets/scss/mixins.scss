@@ -1,0 +1,16 @@
+
+@mixin background($path,$position:0 0,$repeat: no-repeat, $size: contain) {
+	background: {
+		image: url($path);
+		position: $position;
+		repeat: $repeat;
+		size: $size;
+	}
+}
+
+@mixin userSelect($val){
+	-webkit-user-select: $val;
+	-moz-user-select: $val;
+	-ms-user-select: $val;
+	user-select: $val;
+}

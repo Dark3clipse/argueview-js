@@ -1,0 +1,93 @@
+@import "global-vars";
+
+/* general */
+.width100						{width: 100%;}
+.height100						{height: 100%;}
+.imgCircle 						{border-radius: 50%;}
+
+/* text styles */
+.fw600							{font-weight: 600;}
+.bold							{font-weight: bold;}
+.pointer						{cursor: pointer;}
+.shadow							{text-shadow: 0.0625rem 0.0625rem #000;}
+.uppercase						{text-transform: uppercase;}
+.unselectable					{-webkit-user-select: none; /* Safari */-moz-user-select: none; /* Firefox */-ms-user-select: none; /* IE10+/Edge */user-select: none; /* Standard */}
+.linkStyle1:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+.linkStyle2 a, .linkStyle2 i{
+	-webkit-transition: filter 100ms cubic-bezier(.3,0,.7,1);
+	-webkit-transition-property: filter;
+	transition: filter, border-color 100ms cubic-bezier(.3,0,.7,1);
+	transition-property: -moz-filter, -ms-filter, -o-filter, -webkit-filter, filter;
+}
+.linkStyle2:hover a, .linkStyle2:hover i{
+	filter: invert(.3);
+	cursor: pointer;
+}
+span.dot{
+	width: $text-central-dot-size;
+	height: $text-central-dot-size;
+	border-radius: 50%;
+	background-color: $color-bgdark-text-tertiary;
+	display: inline-block;
+	margin: 0 $text-central-dot-margin;
+	vertical-align: middle;
+}
+.ellipsis{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* colors */
+.colorPrimary					{color: $color-primary;}
+.colorPrimaryHighlight			{color: $color-primary-highlight;}
+.bgColorPrimary					{background-color: $color-primary;}
+.bgColorPrimaryHighlight		{background-color: $color-primary-highlight;}
+
+.colorBgDarkTextPrimary			{color: $color-bgdark-text-primary;}
+.colorBgDarkTextSecondary		{color: $color-bgdark-text-secondary;}
+.colorBgDarkTextTertiary		{color: $color-bgdark-text-tertiary;}
+.colorBgDarkPrimary				{color: $color-bgdark-bg-primary;}
+.colorBgDarkSecondary			{color: $color-bgdark-bg-secondary;}
+.colorBgDarkTertiary			{color: $color-bgdark-bg-tertiary;}
+.bgColorBgDarkTextPrimary		{background-color: $color-bgdark-text-primary;}
+.bgColorBgDarkTextSecondary		{background-color: $color-bgdark-text-secondary;}
+.bgColorBgDarkTextTertiary		{background-color: $color-bgdark-text-tertiary;}
+.bgColorBgDarkPrimary			{background-color: $color-bgdark-bg-primary;}
+.bgColorBgDarkSecondary			{background-color: $color-bgdark-bg-secondary;}
+.bgColorBgDarkTertiary			{background-color: $color-bgdark-bg-tertiary;}
+
+.colorBgLightTextPrimary		{color: $color-bglight-text-primary;}
+.colorBgLightTextSecondary		{color: $color-bglight-text-secondary;}
+.colorBgLightTextTertiary		{color: $color-bglight-text-tertiary;}
+.colorBgLightPrimary			{color: $color-bglight-bg-primary;}
+.colorBgLightSecondary			{color: $color-bglight-bg-secondary;}
+.colorBgLightTertiary			{color: $color-bglight-bg-tertiary;}
+.bgColorBgLightTextPrimary		{background-color: $color-bglight-text-primary;}
+.bgColorBgLightTextSecondary	{background-color: $color-bglight-text-secondary;}
+.bgColorBgLightTextTertiary		{background-color: $color-bglight-text-tertiary;}
+.bgColorBgLightPrimary			{background-color: $color-bglight-bg-primary;}
+.bgColorBgLightSecondary		{background-color: $color-bglight-bg-secondary;}
+.bgColorBgLightTertiary			{background-color: $color-bglight-bg-tertiary;}
+
+.colorGreen				{color: $color-green;}
+.colorGreenHighlight		{color: $color-green-hover;}
+.bgColorGreen			{background-color: $color-green;}
+.bgColorGreenHighlight	{background-color: $color-green-hover;}
+
+.colorRed				{color: $color-red;}
+.colorRedHighlight		{color: $color-red-hover;}
+.bgColorRed				{background-color: $color-red;}
+.bgColorRedHighlight		{background-color: $color-red-hover;}
+
+
+/* font-size */
+.fontSizeTitleLarge 			{font-size: $font-size-title-large;}
+.fontSizeTitleMedium 			{font-size: $font-size-title-medium;}
+.fontSizeContentLarge			{font-size: $font-size-content-large;}
+.fontSizeContentMedium			{font-size: $font-size-content-medium;}
+.fontSizeContentIntermediate	{font-size: $font-size-content-intermediate;}
+.fontSizeContentSmall			{font-size: $font-size-content-small;}

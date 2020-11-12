@@ -1,0 +1,15 @@
+
+@mixin pos($position, $top, $right, $bottom, $left, $width, $height) {
+	position: $position;
+	top: $top;
+	right: $right;
+	left: $left;
+	bottom: $bottom;
+	width: $width;
+	height: $height;
+}
+
+.absoluteFullWidth 					{@include pos(absolute, 0, 0, null, 0, 100%, null);}
+.relativeFullWidth 					{@include pos(relative, 0, 0, null, 0, 100%, null);}
+.absoluteFull 						{@include pos(absolute, 0, 0, null, 0, 100%, 100%);}
+.relativeFull	 					{@include pos(relative, 0, 0, null, 0, 100%, 100%);}

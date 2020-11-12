@@ -1,0 +1,44 @@
+
+// flexbox definition
+@mixin flexbox($direction, $justify, $align, $wrap: nowrap) {
+	display: flex;
+	flex-direction: $direction;
+	flex-wrap: $wrap;
+	justify-content: $justify;
+	align-items: $align;
+}
+@mixin flex($n){
+	-webkit-box-flex: $n;
+	-ms-flex: $n;
+	flex: $n;
+}
+
+// flex values
+.flex6							{@include flex(6);}
+.flex5							{@include flex(5);}
+.flex4							{@include flex(4);}
+.flex3							{@include flex(3);}
+.flex2							{@include flex(2);}
+.flex1							{@include flex(1);}
+.flex0							{@include flex(0);}
+
+
+// flexbox shorthands
+.flexRowStartStart				{@include flexbox(row, flex-start, flex-start);}
+.flexRowStartCenter				{@include flexbox(row, flex-start, center);}
+.flexRowStartEnd				{@include flexbox(row, flex-start, flex-end);}
+.flexRowCenterStart				{@include flexbox(row, center, flex-start);}
+.flexRowCenterCenter			{@include flexbox(row, center, center);}
+.flexRowCenterEnd				{@include flexbox(row, center, flex-end);}
+.flexRowEndStart				{@include flexbox(row, flex-end, flex-start);}
+.flexRowEndCenter				{@include flexbox(row, flex-end, center);}
+.flexRowEndEnd					{@include flexbox(row, flex-end, flex-end);}
+.flexColumnStartStart			{@include flexbox(column, flex-start, flex-start);}
+.flexColumnStartCenter			{@include flexbox(column, flex-start, center);}
+.flexColumnStartEnd				{@include flexbox(column, flex-start, flex-end);}
+.flexColumnCenterStart			{@include flexbox(column, center, flex-start);}
+.flexColumnCenterCenter			{@include flexbox(column, center, center);}
+.flexColumnCenterEnd			{@include flexbox(column, center, flex-end);}
+.flexColumnEndStart				{@include flexbox(column, flex-end, flex-start);}
+.flexColumnEndCenter			{@include flexbox(column, flex-end, center);}
+.flexColumnEndEnd				{@include flexbox(column, flex-end, flex-end);}
