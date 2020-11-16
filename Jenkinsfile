@@ -44,8 +44,9 @@ pipeline {
 	  steps {
 	    script {
 	      try {
-	        sh 'printf "registry=https://registry.npmjs.org/\n_auth=\\"${NPM_TOKEN}\\"\nemail=${NPM_EMAIL}\nalways-auth=true\n" > ~/.npmrc'
-		    sh 'npm set registry https://registry.npmjs.org/ && npm publish --access public'
+	        sh 'printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
+	        sh 'cat ~/.npmrc'
+		    sh 'npm publish --access public'
 	      } catch(err) {
 	        echo err.getMessage()
 	      }
