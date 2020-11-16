@@ -25,10 +25,15 @@ pipeline {
 		sh 'node --version && npm --version'
       }
     }
+    stage('dependencies') {
+	  steps {
+		setBuildStatus("Building...", "PENDING");
+		script{ buildBadge.setStatus('running'); }
+		sh 'npm i --dev'
+	  }
+	}
     stage('build') {
       steps {
-        setBuildStatus("Building...", "PENDING");
-        script{ buildBadge.setStatus('running'); }
         sh 'npm run build'
       }
     }
