@@ -47,7 +47,7 @@ module.exports = {
 		{
 			apply: (compiler) => {
 				compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
-					const child = spawn('bash', [path.resolve(__dirname, 'postbuild.sh')], {
+					const child = spawn('sh', [path.resolve(__dirname, 'postbuild.sh')], {
 						cwd: path.resolve(__dirname, prefix)
 					});
 					child.on('exit', () => {
