@@ -45,7 +45,7 @@ pipeline {
 	    script {
 	      try {
 	        sh 'printf "registry=https://registry.npmjs.com/\n_auth=\\"${NPM_TOKEN}\\"\nemail=${NPM_EMAIL}\nalways-auth=true\n" > ~/.npmrc'
-		    sh 'npm publish'
+		    sh 'npm publish --access public'
 	      } catch(err) {
 	        echo err.getMessage()
 	      }
