@@ -45,7 +45,6 @@ pipeline {
 	    script {
 	      try {
 	        sh 'printf "registry=https://registry.npmjs.com/\n_auth=\\"${NPM_TOKEN}\\"\nemail=${NPM_EMAIL}\nalways-auth=true\n" > ~/.npmrc'
-	        sh 'npm cache clean --force && npm login'
 		    sh 'npm publish'
 	      } catch(err) {
 	        echo err.getMessage()
