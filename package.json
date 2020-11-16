@@ -6,8 +6,9 @@
 	"repository": "https://github.com/SophiaHadash/argueview-js",
 	"scripts": {
 		"build": "sh build/prebuild.sh && webpack --config build/webpack.dev.js && webpack --config build/webpack.prod.js && tsc --declaration --emitDeclarationOnly --outDir dist/typings && npm run copy",
-		"server": "cd test/argueview-test-app && npm start",
-		"copy": "rm test/argueview/dist -r && rm test/argueview-test-app/node_modules/argueview -r && mkdir -p test/argueview && cp dist test/argueview/dist -r && cp package.json test/argueview/package.json && cp package-lock.json test/argueview/package-lock.json && cd test/argueview-test-app && npm i"
+		"start": "cd test/argueview-test-app && npm start",
+		"prepare": "npm run build",
+		"copy": "if test -d test/argueview; then rm test/argueview/dist -r; fi && if test -d test/argueview-test-app/node_modules/argueview; then rm test/argueview-test-app/node_modules/argueview -r; fi && mkdir -p test/argueview && cp dist test/argueview/dist -r && cp package.json test/argueview/package.json && cp package-lock.json test/argueview/package-lock.json && cd test/argueview-test-app && npm i"
 	},
 	"main": "dist/argueview",
 	"unpkg": "dist/argueview.js",

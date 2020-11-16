@@ -29,7 +29,7 @@ pipeline {
 	  steps {
 		setBuildStatus("Building...", "PENDING");
 		script{ buildBadge.setStatus('running'); }
-		sh 'npm i --dev'
+		sh 'npm i --also=dev'
 	  }
 	}
     stage('build') {
