@@ -1,0 +1,33 @@
+@import "src/assets/scss/config-styles";
+
+
+.root{
+	@include flexbox(row, space-between, flex-start);
+	padding-bottom: 1rem;
+}
+
+.label{
+	flex: 0;
+	min-width: 10rem;
+}
+.label a{
+	font-weight: bold;
+}
+
+.value{
+	flex: 1;
+}
+.value a{
+
+}
+
+@include media("<=560px"){
+	.root{
+		@include flexbox(column, center, center);
+		text-align: center;
+		padding-bottom: 2rem;
+	}
+	.label{
+		margin-bottom: 0.5rem;
+	}
+}

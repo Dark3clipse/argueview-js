@@ -1,12 +1,11 @@
 {
 	"compilerOptions": {
-		"target": "es2018",
-		"lib": ["dom","esnext"],
+		"module": "es6",
+		"target": "es5",
+		"lib": ["dom","es5"],
 		"moduleResolution": "node",
 		"noEmit": false,
-		"module": "amd",
 		"declaration": true,
-		"outFile": "./dist/argueview.js",
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
@@ -22,13 +21,16 @@
 		"types" : [
 			"node"
 		],
-		"inlineSourceMap": true,
-		"inlineSources": true
+		"sourceMap": false
 	},
 	"exclude": [
 		"node_modules",
 		"build",
 		"dist",
 		"test"
+	],
+	"include": [
+		"typings",
+		"src"
 	]
 }

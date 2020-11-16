@@ -7,7 +7,6 @@ const prefix = "./../";
 
 const base = merge(common, {
 	mode: "development",
-	devtool: "inline-source-map",
 	module: {
 		rules: [{
 			test: /\.module\.s(a|c)ss$/,
@@ -72,56 +71,24 @@ const base = merge(common, {
 });
 
 const es5 = merge(base, {
-	target: "web",
+	target: "es5",
 	output: {
-		filename: "argueview.js"
+		filename: "argueview.js",
+		libraryTarget: 'commonjs'
 	},
 	"module": {
 		"rules": [{
 			test: /\.(ts|js)x?$/,
+			loader: "ts-loader",
+			options: {
+				configFile: 'tsconfig.json'
+			},
 			include: [
 				path.resolve(__dirname, prefix+"src")
-			],
-			loader: "ts-loader"
-		}]
-	}
-});
-
-const es6 = merge(base, {
-	target: "es6",
-	output: {
-		filename: "argueview.mjs"
-	},
-	"module": {
-		"rules": [{
-			test: /\.(ts|js)x?$/,
-			include: [
-				path.resolve(__dirname, prefix+"src")
-			],
-			use: [{
-				loader: "babel-loader",
-				options: {
-					"presets": [
-						["@babel/preset-env", {
-							"targets": {
-								"esmodules": true
-							}
-						}],
-						"@babel/preset-typescript",
-						"@babel/preset-react"
-					],
-					"plugins": [
-						["@babel/plugin-proposal-decorators", {"legacy": true}],
-						["@babel/proposal-class-properties", { "loose": true }],
-						["@babel/plugin-transform-classes", { "loose": false }],
-						"@babel/proposal-object-rest-spread"
-					],
-					cacheDirectory: true
-				}
-			}]
+			]
 		}]
 	}
 });
 
 
-module.exports = [es5, es6];
+module.exports = [es5];

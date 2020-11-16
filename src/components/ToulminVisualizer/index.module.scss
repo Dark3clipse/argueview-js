@@ -1,0 +1,8 @@
+@import "src/assets/scss/config-styles";
+
+
+.root{
+	@include flexbox(column, center, stretch);
+	padding: 1.5rem;
+	text-align: left;
+}

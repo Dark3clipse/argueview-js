@@ -1,11 +1,13 @@
+import {ExplanationObject} from "argueview/dist/typings/explanation";
 import React from 'react';
 import './App.css';
 import { ToulminVisualizer } from "argueview";
+import explanation from "./explanation.json";
 
 function App() {
-  return (
+    return (
     <div className="App">
-      <ToulminVisualizer />
+      <ToulminVisualizer explanation={explanation as ExplanationObject} />
     </div>
   );
 }

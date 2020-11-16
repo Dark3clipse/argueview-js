@@ -1,22 +1,14 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const spawn = require('child_process').spawn;
 const prefix = "./../";
 
 
 module.exports = {
-	entry: path.resolve(__dirname, prefix+"src/loader.tsx"),
-	externals: {
-		'react': 'react',
-		'react-dom': 'react-dom',
-	},
+	entry: path.resolve(__dirname, prefix+"src/loader.ts"),
+	devtool: 'source-map',
 	output: {
-		path: path.resolve(__dirname, prefix+"dist"),
-		libraryTarget: 'umd',
-		library: "argueview",
-		globalObject: "this",
-		umdNamedDefine: true
+		path: path.resolve(__dirname, prefix+"dist")
 	},
 	resolve: {
 		// Add `.ts` and `.tsx` as a resolvable extension.
