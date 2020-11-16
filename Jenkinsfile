@@ -45,7 +45,6 @@ pipeline {
 	    script {
 	      try {
 	        sh 'printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
-	        sh 'cat ~/.npmrc'
 		    sh 'npm publish --access public'
 	      } catch(err) {
 	        echo err.getMessage()
