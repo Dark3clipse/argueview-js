@@ -38,7 +38,7 @@ import React from 'react';
 import { ToulminVisualizer } from "argueview";
 import explanation from "./explanation.json";
 
-class Example extends React.Component {
+class MyComponent extends React.Component {
   render() {
     return <ToulminVisualizer explanation={explanation} />;
   }
