@@ -1,4 +1,9 @@
-# argueview-js
+
+<p align="center">
+  <img href="https://github.com/SophiaHadash/ArgueView" alt="ArgueView" src="https://raw.githubusercontent.com/SophiaHadash/ArgueView/master/screenshots/logo.svg" width="50%" />
+<p>
+
+--- 
 [![Build Status](https://jenkins.tuneblendr.com/job/argueview-js/job/master/badge/icon?style=flat "Build Status")](https://jenkins.tuneblendr.com/blue/organizations/jenkins/argueview-js/activity)
 
 ArgueView is a tool for generating text-based presentations for machine-learning predictions and feature-importance 
