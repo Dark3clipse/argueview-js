@@ -19,7 +19,7 @@ directly available in Jupyther Notebooks.
 Example output:
 
 ![Example Visualization](https://github.com/sophiahadash/argueview/blob/master/screenshots/toulmin-visualizer.png?raw=true)
-
+![Example output](https://github.com/sophiahadash/argueview/blob/master/screenshots/featurelist-visualizer.png?raw=true)
 
 ## Installation
 
