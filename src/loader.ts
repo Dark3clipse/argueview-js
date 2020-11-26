@@ -1,2 +1,3 @@
 import ToulminVisualizer from "./components/ToulminVisualizer";
-export { ToulminVisualizer }
+import FeatureListVisualizer from "./components/FeatureListVisualizer";
+export { ToulminVisualizer, FeatureListVisualizer }

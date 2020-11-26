@@ -1,0 +1,59 @@
+@import "src/assets/scss/config-styles";
+
+
+.root{
+	@include flexbox(row, space-between, flex-start);
+	border-bottom: 0.0625rem solid black;
+	padding-bottom: 0.25rem;
+}
+.contribution:hover{
+	cursor: pointer;
+}
+.label:hover{
+	cursor: pointer;
+}
+
+.root a{
+	font-weight: bold;
+}
+
+.sortButton{
+	font-size: 1rem;
+	font-weight: bold;
+	margin-left: .25rem;
+}
+
+
+@include media(">750px"){
+	.contribution{
+		min-width: 12rem;
+		max-width: 14rem;
+	}
+	.label{
+		min-width: 10rem;
+		max-width: 17rem;
+	}
+}
+@include media("<=750px", ">560px"){
+	.contribution{
+		min-width: 8rem;
+		max-width: 9rem;
+	}
+	.label{
+		min-width: 8rem;
+		max-width: 14rem;
+	}
+}
+@include media("<=560px"){
+	.contribution{
+		min-width: 8rem;
+		max-width: 9rem;
+	}
+	.label{
+		min-width: 8rem;
+	}
+	.value{
+		display: none;
+		visibility: hidden;
+	}
+}

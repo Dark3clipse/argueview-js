@@ -1,0 +1,130 @@
+@import "src/assets/scss/config-styles";
+
+
+.root{
+	@include flexbox(column, center, stretch);
+	transition: background 0.2s 0s ease-in-out;
+}
+.root:hover{
+	background-color: #eeeeee;
+	cursor: pointer;
+}
+
+.top{
+	@include flexbox(row, space-between, flex-start);
+}
+.bottom{
+	@include flexbox(column, center, flex-start);
+	transition: transform 0.2s 0s ease-in-out,
+				max-height 0.2s 0s ease-in-out,
+				margin-top 0.2s 0s ease-in-out,
+				margin-bottom 0.2s 0s ease-in-out;
+	transform: scaleY(1);
+	transform-origin: top;
+	max-height: max-content;
+}
+.bottomLine{
+	@include flexbox(row, flex-start, flex-start);
+	margin-bottom: 0.5rem;
+}
+.bottomLabel{
+	width: 7rem;
+	min-width: 7rem;
+}
+
+
+.parity{
+	background-color: #f9f9f9;
+}
+
+.contribution{
+	flex: 1;
+	@include flexbox(row, center, center);
+}
+.label{
+	flex: 2;
+	@include flexbox(column, center, flex-start);
+}
+a.label{
+	font-weight: bold;
+}
+
+.value{
+	flex: 2;
+}
+.value a{
+
+}
+
+
+@include media(">750px"){
+	.root{
+		padding: .5rem 0 .5rem 0;
+	}
+	.contribution{
+		min-width: 12rem;
+		max-width: 14rem;
+	}
+	.label{
+		min-width: 10rem;
+		max-width: 17rem;
+	}
+	.stackedValue{
+		display: none;
+		visibility: hidden;
+	}
+	.bottom{
+		margin: 1.5rem 3rem 1.5rem 3rem;
+	}
+}
+@include media("<=750px", ">560px"){
+	.root{
+		padding: .5rem 0 .5rem 0;
+	}
+	.contribution{
+		min-width: 8rem;
+		max-width: 9rem;
+	}
+	.label{
+		min-width: 8rem;
+		max-width: 14rem;
+	}
+	.stackedValue{
+		display: none;
+		visibility: hidden;
+	}
+	.bottom{
+		margin: 1rem;
+	}
+}
+@include media("<=560px"){
+	.root{
+		padding: .75rem 0 .75rem 0;
+	}
+	.contribution{
+		min-width: 8rem;
+		max-width: 9rem;
+	}
+	.label{
+		min-width: 8rem;
+	}
+	.value{
+		display: none;
+		visibility: hidden;
+	}
+	.stackedValue{
+		display: block;
+		visibility: visible;
+		margin-top: .125rem;
+	}
+	.bottom{
+		margin: 1rem;
+	}
+}
+
+.hidden{
+	transform: scaleY(0);
+	max-height: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+}

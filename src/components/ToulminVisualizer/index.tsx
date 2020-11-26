@@ -1,4 +1,5 @@
 import React from "react";
+import {argmax} from "src/argmax";
 import styles from "src/components/ToulminVisualizer/index.module.scss";
 import ToulminVisualizerItem from "src/components/ToulminVisualizerItem";
 import {ExplanationObject} from "src/explanation";
@@ -23,12 +24,8 @@ export default class ToulminVisualizer extends React.Component<MyProps, MyState>
 		super(p);
 	}
 
-	private static argmax(arr: number[]): number{
-		return arr.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
-	}
-
 	private get qualifier(): string{
-		const cls = ToulminVisualizer.argmax(this.props.explanation.case.class_proba);
+		const cls = argmax(this.props.explanation.case.class_proba);
 		const proba_decision = this.props.explanation.case.class_proba[cls];
 		const proba_uncertain = 1 / this.props.explanation.case.class_proba.length;
 		const full_range = 1 - proba_uncertain;
@@ -43,7 +40,7 @@ export default class ToulminVisualizer extends React.Component<MyProps, MyState>
 	}
 
 	public render() {
-		const cls = ToulminVisualizer.argmax(this.props.explanation.case.class_proba);
+		const cls = argmax(this.props.explanation.case.class_proba);
 		const clsName = this.props.explanation.data.classes[cls];
 		return (<div className={[styles.root, this.props.className].join(' ')}>
 			<ToulminVisualizerItem title={"Decision"} value={clsName} />

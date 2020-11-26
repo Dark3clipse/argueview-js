@@ -11,7 +11,6 @@ export default class ToulminVisualizer extends React.Component<MyProps, MyState>
         className: string;
     };
     constructor(p: any);
-    private static argmax;
     private get qualifier();
     private get lrat();
     render(): JSX.Element;
