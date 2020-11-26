@@ -23,7 +23,7 @@ Example output:
 
 ## Installation
 
-argueview-js is available as a [npm package](). Add to your project:
+argueview-js is available as a [npm package](https://www.npmjs.com/package/argueview-js). Add to your project:
 ```
 npm install argueview-js --save
 ```
