@@ -59,6 +59,9 @@ pipeline {
 	}
   }
   post {
+    always{
+      junit 'coverage/junit.xml'
+    }
     success {
       cobertura coberturaReportFile: 'coverage/cobertura-coverage.xml', enableNewApi: true
 	  setBuildStatus("Build succeeded", "SUCCESS");
