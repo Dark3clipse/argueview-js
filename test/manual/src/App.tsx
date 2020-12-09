@@ -7,7 +7,7 @@ import explanation from "./explanation.json";
 function App() {
     return (
     <div className="App">
-      <FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"none"} threshold={0.01} />
+      <FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"positive"} lct={"label"} threshold={0.01} />
     </div>
   );
 }

@@ -37,6 +37,11 @@ pipeline {
         sh 'npm run build'
       }
     }
+    stage('test') {
+	  steps {
+		sh 'npm test'
+	  }
+	}
 	stage('publish') {
 	  when {
         branch 'master'
@@ -55,6 +60,7 @@ pipeline {
   }
   post {
     success {
+      cobertura coberturaReportFile: 'coverage/cobertura-coverage.xml', enableNewApi: true
 	  setBuildStatus("Build succeeded", "SUCCESS");
 	  script{ buildBadge.setStatus('passing'); }
     }

@@ -28,7 +28,7 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 		parity: true,
 		contribution: 0,
 		framing: "positive",
-		lct: "positive",
+		lct: "label",
 		rationale: ""
 	}
 
@@ -103,12 +103,16 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 			case "original":
 				break;
 		}
+
+		if (this.props.lct == "anti-label"){
+			sign *= -1;
+		}
+
 		return sign;
 	}
 
 	public label(): string{
 		const e = this.props.explanation;
-		const cls = argmax(e.case.class_proba);
 
 		// compute signed contribution
 		const c = Math.abs(this.props.contribution) * this.sign();
@@ -117,7 +121,7 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 		if (this.props.lct == "none"){
 			return c > 0 ? "positive" : "negative";
 		}else{
-			if (this.props.lct == "positive"){
+			if (this.props.lct == "label"){
 				return e.data.latent_continuous_target.label;
 			}else{
 				return e.data.latent_continuous_target.anti_label;

@@ -1,7 +1,7 @@
 import React from "react";
-import {argmax} from "src/argmax";
-import styles from "src/components/ToulminVisualizer/index.module.scss";
-import ToulminVisualizerItem from "src/components/ToulminVisualizerItem";
+import {argmax} from "./../../argmax";
+import styles from "./index.module.scss";
+import ToulminVisualizerItem from "./../ToulminVisualizerItem";
 import {ExplanationObject} from "src/explanation";
 
 

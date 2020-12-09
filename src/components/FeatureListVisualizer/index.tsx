@@ -8,7 +8,7 @@ import {Attack, ExplanationObject, Feature, Support} from "src/explanation";
 export type SortBy = "index" | "contribution" | "name";
 export type SortDirection = "asc" | "desc";
 export type Framing = "original" | "positive" | "negative";
-export type LatentContinuousTargetDisplay = "none" | "positive" | "negative";
+export type LatentContinuousTargetDisplay = "none" | "label" | "anti-label";
 
 interface MyProps{
 	className?: string;
@@ -29,7 +29,7 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 		className: "",
 		source: 0,
 		framing: "positive",
-		lct: "positive",
+		lct: "label",
 		threshold: 0
 	}
 
