@@ -21,7 +21,7 @@ afterEach(() => {
 	container = null;
 });
 
-it("renders explanation", () => {
+it("renders", () => {
 	act(() => {
 		render(<ToulminVisualizer explanation={explanation as ExplanationObject} />, container);
 	});

@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "src/components/FeatureListVisualizer/index.module.scss";
-import FeatureListVisualizerHeader from "src/components/FeatureListVisualizerHeader";
-import FeatureListVisualizerItem from "src/components/FeatureListVisualizerItem";
-import {Attack, ExplanationObject, Feature, Support} from "src/explanation";
+import styles from "./../FeatureListVisualizer/index.module.scss";
+import FeatureListVisualizerHeader from "./../FeatureListVisualizerHeader";
+import FeatureListVisualizerItem from "./../FeatureListVisualizerItem";
+import {Attack, ExplanationObject, Feature, Support} from "./../../explanation";
 
 
 export type SortBy = "index" | "contribution" | "name";

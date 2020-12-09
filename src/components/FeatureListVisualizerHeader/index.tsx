@@ -1,8 +1,8 @@
 import React from "react";
 import {SortDownIcon, SortUpIcon} from "react-line-awesome";
-import {SortBy, SortDirection} from "src/components/FeatureListVisualizer";
-import styles from "src/components/FeatureListVisualizerHeader/index.module.scss";
-import {LineAwesomeLoader} from "src/LineAwesomeLoader";
+import {SortBy, SortDirection} from "./../FeatureListVisualizer";
+import styles from "./../FeatureListVisualizerHeader/index.module.scss";
+import {LineAwesomeLoader} from "./../../LineAwesomeLoader";
 
 
 interface MyProps{

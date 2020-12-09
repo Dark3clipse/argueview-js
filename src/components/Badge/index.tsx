@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "src/components/Badge/index.module.scss";
+import styles from "./../Badge/index.module.scss";
 
 
 export type BadgeDirection = "positive" | "negative" | "neutral";
@@ -8,7 +8,8 @@ interface MyProps{
 	className?: string;
 	contribution: number;
 	label: string;
-	direction?: BadgeDirection;
+	framing?: BadgeDirection;
+	sign?: number;
 }
 
 interface MyState{
@@ -18,7 +19,8 @@ interface MyState{
 export default class Badge extends React.Component<MyProps, MyState> {
 	public static defaultProps = {
 		className: "",
-		direction: "neutral"
+		framing: "neutral",
+		sign: 1
 	}
 
 
@@ -27,7 +29,7 @@ export default class Badge extends React.Component<MyProps, MyState> {
 	}
 
 	public render() {
-		return (<div className={[styles.root, this.props.className, styles[this.props.direction]].join(' ')}>
+		return (<div className={[styles.root, this.props.className, styles[this.props.framing]].join(' ')}>
 			<a>{this.text()}</a>
 		</div>);
 	}
@@ -36,9 +38,10 @@ export default class Badge extends React.Component<MyProps, MyState> {
 		let r = '';
 
 		// add sign
-		switch(this.props.direction){
-			case 'positive': r+="+"; break;
-			case 'negative': r+="-"; break;
+		switch(this.props.sign){
+			default:
+			case 1: r+="+"; break;
+			case -1: r+="-"; break;
 		}
 
 		// add contribution as percentage

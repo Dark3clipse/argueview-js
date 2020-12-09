@@ -5,6 +5,7 @@
 
 --- 
 [![Build Status](https://jenkins.tuneblendr.com/job/argueview-js/job/master/badge/icon?style=flat "Build Status")](https://jenkins.tuneblendr.com/blue/organizations/jenkins/argueview-js/activity)
+[![Code Coverage](https://img.shields.io/jenkins/coverage/cobertura?jobUrl=https%3A%2F%2Fjenkins.tuneblendr.com%2Fjob%2Fargueview-js%2Fjob%2Fmaster "Code Coverage")](https://jenkins.tuneblendr.com/job/argueview-js/job/master/coverage/)
 
 ArgueView is a tool for generating text-based presentations for machine-learning predictions and feature-importance 
 based explanation tools. The tool makes use of Toulmin's model of argumentation for structuring the text-based 

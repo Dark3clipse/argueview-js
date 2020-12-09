@@ -1,9 +1,9 @@
 import React from "react";
-import {argmax} from "src/argmax";
-import Badge from "src/components/Badge";
-import {Framing, LatentContinuousTargetDisplay} from "src/components/FeatureListVisualizer";
-import styles from "src/components/FeatureListVisualizerItem/index.module.scss";
-import {ExplanationObject, Feature} from "src/explanation";
+import {argmax} from "./../../argmax";
+import Badge, {BadgeDirection} from "./../Badge";
+import {Framing, LatentContinuousTargetDisplay} from "./../FeatureListVisualizer";
+import styles from "./../FeatureListVisualizerItem/index.module.scss";
+import {ExplanationObject, Feature} from "./../../explanation";
 
 
 interface MyProps{
@@ -45,7 +45,7 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 			<div className={styles.top}>
 				<div className={styles.contribution}>
 					{this.props.contribution != 0 &&
-					<Badge contribution={Math.abs(this.props.contribution)} label={this.label()} direction={this.sign()==1?"positive":"negative"} />}
+					<Badge contribution={Math.abs(this.props.contribution)} label={this.label()} sign={this.sign()} framing={this.framing()} />}
 				</div>
 				<div className={styles.label}>
 					<a className={styles.label}>{this.props.feature.name}</a>
@@ -78,33 +78,72 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 		</div>);
 	}
 
-	public sign(): number{
+	/**Determine the direction the original explanation is framed in.
+	 * @returns {BadgeDirection} */
+	private framing_global_default(): BadgeDirection{
+		let g: BadgeDirection;
 		const e = this.props.explanation;
 		const cls = argmax(e.case.class_proba);
-		const mcc = e.data.latent_continuous_target ? e.data.latent_continuous_target[cls] : 0;
-		let sign = this.props.contribution / Math.abs(this.props.contribution);
-		switch(this.props.framing){
-			case "positive":
+		const mcc = e.data.latent_continuous_target ? e.data.latent_continuous_target.mapping[cls] : 0;
+		if (mcc > 0){
+			g = "positive";
+		}else{
+			g = "negative";
+		}
+		return g;
+	}
 
-				// if current decision-class is negative: invert sign
-				if (mcc < 0){
-					sign *= -1;
-				}
-				break;
+	/**Determine the direction the explanation should be framed in.
+	 * @returns {BadgeDirection} */
+	private framing_global_target(): BadgeDirection{
+		let g: BadgeDirection;
+		if (this.props.framing != "original"){
+			g = this.props.framing;
+		}else{
+			const e = this.props.explanation;
+			g = this.framing_global_default();
+		}
+		return g;
+	}
 
-			case "negative":
+	/**Determine the direction this item should be framed in.
+	 * @returns {BadgeDirection} */
+	public framing(): BadgeDirection{
+		const should = this.framing_global_target();
+		const is = this.framing_global_default();
+		let r: BadgeDirection = is;
 
-				// if current decision-class is positive: invert sign
-				if (mcc > 0){
-					sign *= -1;
-				}
-				break;
-
-			case "original":
-				break;
+		// flip function
+		const flip = ()=>{
+			if (r == "positive"){
+				r = "negative";
+			}else{
+				r = "positive";
+			}
 		}
 
+		if (is != should){
+			flip();
+		}
+
+		if (this.sign()==-1){
+			flip();
+		}
+
+		if (this.props.lct=="anti-label"){
+			flip();
+		}
+
+		return r;
+	}
+
+	/**Compute sign of this item based on the framing and lct.
+	 * @returns {number} `1` or `-1`. */
+	public sign(): number{
+		let sign = this.props.contribution / Math.abs(this.props.contribution);
+
 		if (this.props.lct == "anti-label"){
+			// signs must be reversed because we frame according to anti-labels.
 			sign *= -1;
 		}
 
