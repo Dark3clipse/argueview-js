@@ -1,5 +1,5 @@
 import React from "react";
-import { ExplanationObject } from "src/explanation";
+import { ExplanationObject } from "../../IExplanation";
 interface MyProps {
     className?: string;
     explanation: ExplanationObject;

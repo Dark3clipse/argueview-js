@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./../FeatureListVisualizer/index.module.scss";
 import FeatureListVisualizerHeader from "./../FeatureListVisualizerHeader";
 import FeatureListVisualizerItem from "./../FeatureListVisualizerItem";
-import {Attack, ExplanationObject, Feature, Support} from "./../../explanation";
+import {Attack, ExplanationObject, Feature, Support} from "../../IExplanation";
 
 
 export type SortBy = "index" | "contribution" | "name";

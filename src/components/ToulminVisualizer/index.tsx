@@ -2,7 +2,7 @@ import React from "react";
 import {argmax} from "./../../argmax";
 import styles from "./index.module.scss";
 import ToulminVisualizerItem from "./../ToulminVisualizerItem";
-import {ExplanationObject} from "src/explanation";
+import {ExplanationObject} from "../../IExplanation";
 
 
 interface MyProps{

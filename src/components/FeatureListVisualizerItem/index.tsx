@@ -3,7 +3,7 @@ import {argmax} from "./../../argmax";
 import Badge, {BadgeDirection} from "./../Badge";
 import {Framing, LatentContinuousTargetDisplay} from "./../FeatureListVisualizer";
 import styles from "./../FeatureListVisualizerItem/index.module.scss";
-import {ExplanationObject, Feature} from "./../../explanation";
+import {ExplanationObject, Feature} from "../../IExplanation";
 
 
 interface MyProps{

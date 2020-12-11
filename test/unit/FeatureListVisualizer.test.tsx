@@ -3,7 +3,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import {afterEach, beforeEach, expect, it} from "@jest/globals";
 import FeatureListVisualizer from "../../src/components/FeatureListVisualizer";
-import {ExplanationObject} from "../../src/explanation";
+import {ExplanationObject} from "../../src/IExplanation";
 import explanation from "../explanation.json";
 import ReactTestUtils from 'react-dom/test-utils';
 
