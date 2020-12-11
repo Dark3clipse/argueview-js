@@ -31,7 +31,7 @@ module.exports = {
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: [
     "/node_modules/",
-    "**/I[A-Z]*.{ts}"
+    "src/*/I[A-z]*.ts"
   ],
 
   // Indicates which provider should be used to instrument code for coverage
