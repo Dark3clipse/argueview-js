@@ -56,6 +56,9 @@ a.label{
 
 }
 
+.badge{
+	width: 100%;
+}
 
 @include media(">750px"){
 	.root{
@@ -76,6 +79,9 @@ a.label{
 	.bottom{
 		margin: 1.5rem 3rem 1.5rem 3rem;
 	}
+	.badge{
+		margin: 0 2rem;
+	}
 }
 @include media("<=750px", ">560px"){
 	.root{
@@ -95,6 +101,9 @@ a.label{
 	}
 	.bottom{
 		margin: 1rem;
+	}
+	.badge{
+		margin: 0 0.5rem;
 	}
 }
 @include media("<=560px"){
@@ -119,6 +128,9 @@ a.label{
 	}
 	.bottom{
 		margin: 1rem;
+	}
+	.badge{
+		margin: 0 0.5rem;
 	}
 }
 

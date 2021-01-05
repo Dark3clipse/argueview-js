@@ -45,7 +45,7 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 			<div className={styles.top}>
 				<div className={styles.contribution}>
 					{this.props.contribution != 0 &&
-					<Badge contribution={Math.abs(this.props.contribution)} label={this.label()} sign={this.sign()} framing={this.framing()} />}
+					<Badge className={styles.badge} contribution={Math.abs(this.props.contribution)} label={this.label()} sign={this.sign()} framing={this.framing()} />}
 				</div>
 				<div className={styles.label}>
 					<a className={styles.label}>{this.props.feature.name}</a>

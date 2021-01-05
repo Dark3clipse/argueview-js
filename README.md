@@ -63,7 +63,7 @@ import explanation from "./explanation.json";
 
 export default class MyComponent extends React.Component<{}, {}> {
     public render() {
-        return <ToulminVisualizer explanation={explanation} />;
+        return <ToulminVisualizer explanation={explanation as ExplanationObject} />;
     }
 }
 ```
