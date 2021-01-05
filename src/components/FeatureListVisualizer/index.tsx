@@ -16,6 +16,11 @@ interface MyProps{
 	source?: number;
 	framing?: Framing;
 	lct?: LatentContinuousTargetDisplay;
+	thresholdBadge?: number;
+	thresholdOmit?: number;
+	omitIntercept?: boolean;
+
+	/** @deprecated Use `thresholdBadge` instead. */
 	threshold?: number;
 }
 
@@ -30,7 +35,10 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 		source: 0,
 		framing: "positive",
 		lct: "label",
-		threshold: 0
+		threshold: -1,
+		thresholdBadge: 0,
+		thresholdOmit: -1,
+		omitIntercept: false
 	}
 
 	constructor(p){
@@ -47,6 +55,16 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 	}
 
 	public render() {
+
+		// set thresholds based on properties
+		let thresholdBadge = this.props.thresholdBadge;
+		let thresholdOmit = this.props.thresholdOmit;
+
+		// support old syntax
+		if (this.props.threshold != -1){
+			thresholdBadge = this.props.threshold;
+			thresholdOmit = -1;
+		}
 
 		// prepare
 		const items = [];
@@ -66,28 +84,31 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 		});
 
 		// add virtual feature 'intercept'
-		const icp_index = features.length;
-		features.push({
-			name: "intercept",
-			index: icp_index,
-			description: "Contribution independent of the features.",
-			nominal_value: null,
-			data_type: "numeric",
-			number_of_missing_values: 0,
-			is_ignore: true,
-			is_target: true,
-			is_row_identifier: true
-		});
-		values.push({
-			value: explanation.explanation.base
-		});
-		const icp = explanation.explanation.base;
-		(icp > 0 ? explanation.explanation.support : explanation.explanation.attack).push({
-			source: this.props.source,
-			feature: icp_index,
-			contribution: icp,
-			value: this.interceptValue(Math.sign(icp))
-		});
+		if (!this.props.omitIntercept){
+			const icp_index = features.length;
+			features.push({
+				name: "intercept",
+				index: icp_index,
+				description: "Contribution independent of the features.",
+				nominal_value: null,
+				data_type: "numeric",
+				number_of_missing_values: 0,
+				is_ignore: true,
+				is_target: true,
+				is_row_identifier: true
+			});
+			values.push({
+				value: explanation.explanation.base
+			});
+			const icp = explanation.explanation.base;
+			(icp > 0 ? explanation.explanation.support : explanation.explanation.attack).push({
+				source: this.props.source,
+				feature: icp_index,
+				contribution: icp,
+				value: this.interceptValue(Math.sign(icp))
+			});
+		}
+
 
 		// sort features
 		let sortFunction: (a: Feature, b: Feature) => number;
@@ -124,8 +145,11 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 			const v = values[f.index].value;
 			const c = this.findContribution(explanation, f);
 			let contribution = 0;
-			if (c?.contribution && Math.abs(c.contribution) >= this.props.threshold){
+			if (c?.contribution && Math.abs(c.contribution) >= thresholdBadge){
 				contribution = c.contribution;
+			}
+			if (Math.abs(c.contribution) < thresholdOmit && f.name != "intercept"){
+				continue;
 			}
 			items.push(<FeatureListVisualizerItem key={`item-${i}`} explanation={explanation} framing={this.props.framing} lct={this.props.lct} feature={f} value={v} contribution={contribution} rationale={c?.value} parity={i%2==0} />)
 		}
