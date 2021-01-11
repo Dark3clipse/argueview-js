@@ -1,0 +1,533 @@
+{
+    "backing": "Supported by Sophia Hadash, MSc from Jheronimus Academy of Data Science.",
+    "data": {
+        "classes": [
+            "You are applicable for a loan.",
+            "You are not applicable for a loan."
+        ],
+        "sources": [
+            {
+                "name": "German Credit",
+                "author": "Dr. Hans Hofmann, Universit\u00e4t Hamburg, Institut f\u00fcr Statistik und \u00d6konometrie",
+                "description": "This dataset classifies people described by a set of attributes as good or bad credit risks.",
+                "href": "https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)",
+                "observations": 1000,
+                "type": "static",
+                "year": 1994,
+                "features": [
+                    {
+                        "index": 0,
+                        "name": "checking_status",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "0<=X<200",
+                            "<0",
+                            ">=200",
+                            "no checking"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Status of existing checking account, in Deutsche Mark."
+                    },
+                    {
+                        "index": 1,
+                        "name": "duration",
+                        "data_type": "numeric",
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Duration in months"
+                    },
+                    {
+                        "index": 2,
+                        "name": "credit_history",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "all paid",
+                            "critical/other existing credit",
+                            "delayed previously",
+                            "existing paid",
+                            "no credits/all paid"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Credit history (credits taken, paid back duly, delays, critical accounts)"
+                    },
+                    {
+                        "index": 3,
+                        "name": "purpose",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "business",
+                            "domestic appliance",
+                            "education",
+                            "furniture/equipment",
+                            "new car",
+                            "other",
+                            "radio/tv",
+                            "repairs",
+                            "retraining",
+                            "used car",
+                            "vacation"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Purpose of the credit (car, television,...)"
+                    },
+                    {
+                        "index": 4,
+                        "name": "credit_amount",
+                        "data_type": "numeric",
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Credit amount"
+                    },
+                    {
+                        "index": 5,
+                        "name": "savings_status",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "100<=X<500",
+                            "500<=X<1000",
+                            "<100",
+                            ">=1000",
+                            "no known savings"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Status of savings account/bonds, in Deutsche Mark."
+                    },
+                    {
+                        "index": 6,
+                        "name": "employment",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "1<=X<4",
+                            "4<=X<7",
+                            "<1",
+                            ">=7",
+                            "unemployed"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Present employment, in number of years."
+                    },
+                    {
+                        "index": 7,
+                        "name": "installment_commitment",
+                        "data_type": "numeric",
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Installment rate in percentage of disposable income"
+                    },
+                    {
+                        "index": 8,
+                        "name": "personal_status",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "female div/dep/mar",
+                            "female single",
+                            "male div/sep",
+                            "male mar/wid",
+                            "male single"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Personal status (married, single,...) and sex"
+                    },
+                    {
+                        "index": 9,
+                        "name": "other_parties",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "co applicant",
+                            "guarantor",
+                            "none"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Other debtors / guarantors"
+                    },
+                    {
+                        "index": 10,
+                        "name": "residence_since",
+                        "data_type": "numeric",
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Present residence since X years"
+                    },
+                    {
+                        "index": 11,
+                        "name": "property_magnitude",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "car",
+                            "life insurance",
+                            "no known property",
+                            "real estate"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Property (e.g. real estate)"
+                    },
+                    {
+                        "index": 12,
+                        "name": "age",
+                        "data_type": "numeric",
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Age in years"
+                    },
+                    {
+                        "index": 13,
+                        "name": "other_payment_plans",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "bank",
+                            "none",
+                            "stores"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Other installment plans (banks, stores)"
+                    },
+                    {
+                        "index": 14,
+                        "name": "housing",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "for free",
+                            "own",
+                            "rent"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Housing (rent, own,...)"
+                    },
+                    {
+                        "index": 15,
+                        "name": "existing_credits",
+                        "data_type": "numeric",
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Number of existing credits at this bank"
+                    },
+                    {
+                        "index": 16,
+                        "name": "job",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "high qualif/self emp/mgmt",
+                            "skilled",
+                            "unemp/unskilled non res",
+                            "unskilled resident"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Job"
+                    },
+                    {
+                        "index": 17,
+                        "name": "num_dependents",
+                        "data_type": "numeric",
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Number of people being liable to provide maintenance for"
+                    },
+                    {
+                        "index": 18,
+                        "name": "own_telephone",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "none",
+                            "yes"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Telephone (yes,no)"
+                    },
+                    {
+                        "index": 19,
+                        "name": "foreign_worker",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "no",
+                            "yes"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0,
+                        "description": "Foreign worker (yes,no)"
+                    },
+                    {
+                        "index": 20,
+                        "name": "class",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "bad",
+                            "good"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0
+                    },
+                    {
+                        "index": 21,
+                        "name": "feature_without_value",
+                        "data_type": "nominal",
+                        "nominal_value": [
+                            "one",
+                            "two"
+                        ],
+                        "is_target": true,
+                        "is_ignore": true,
+                        "is_row_identifier": true,
+                        "number_of_missing_values": 0
+                    }
+                ]
+            }
+        ]
+    },
+    "case": {
+        "id": 105,
+        "class_proba": [
+            0.8863871488336866,
+            0.11361285116631323
+        ],
+        "sources": [
+            {
+                "features": [
+                    {
+                        "value": 3.0
+                    },
+                    {
+                        "value": 24.0
+                    },
+                    {
+                        "value": 2.0
+                    },
+                    {
+                        "value": 3.0
+                    },
+                    {
+                        "value": 1376.0
+                    },
+                    {
+                        "value": 2.0
+                    },
+                    {
+                        "value": 3.0
+                    },
+                    {
+                        "value": 4.0
+                    },
+                    {
+                        "value": 1.0
+                    },
+                    {
+                        "value": 0.0
+                    },
+                    {
+                        "value": 1.0
+                    },
+                    {
+                        "value": 2.0
+                    },
+                    {
+                        "value": 28.0
+                    },
+                    {
+                        "value": 2.0
+                    },
+                    {
+                        "value": 1.0
+                    },
+                    {
+                        "value": 1.0
+                    },
+                    {
+                        "value": 2.0
+                    },
+                    {
+                        "value": 1.0
+                    },
+                    {
+                        "value": 0.0
+                    },
+                    {
+                        "value": 0.0
+                    },
+                    {
+                        "value": 0
+                    }
+                ]
+            }
+        ]
+    },
+    "explanation": {
+        "support": [
+            {
+                "source": 0,
+                "feature": 0,
+                "contribution": 0.08087977946663819,
+                "value": "You have a sufficient amount on your checking account."
+            },
+            {
+                "source": 0,
+                "feature": 5,
+                "contribution": 0.05105824463174075,
+                "value": "Your savings give us confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 4,
+                "contribution": 0.004152932382361271,
+                "value": "Your credit amount gives us confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 1,
+                "contribution": 0.0038567886788555554,
+                "value": "We believe the duration of the credit is appropriate."
+            },
+            {
+                "source": 0,
+                "feature": 14,
+                "contribution": 0.0037311920028801097,
+                "value": "Living in owned housing increases the confidence we have in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 15,
+                "contribution": 0.0028555674251128445,
+                "value": "The amount of your credits gives us confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 16,
+                "contribution": 0.002203623702717566,
+                "value": "Your current employment responsibilities supports our confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 6,
+                "contribution": 0.0014100855802761214,
+                "value": "The duration of your current employment gives us confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 3,
+                "contribution": 0.0007553142454504227,
+                "value": "We are interested in providing loans for the purpose of buying a radio or tv."
+            },
+            {
+                "source": 0,
+                "feature": 2,
+                "contribution": 0.0001300950123580783,
+                "value": "Your credit history gives us confidence in your capabilities."
+            }
+        ],
+        "attack": [
+            {
+                "source": 0,
+                "feature": 11,
+                "contribution": -0.018763165902641425,
+                "value": "The fact that you own a car gives us confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 19,
+                "contribution": -0.012267596142775512,
+                "value": "Because you are a foreign worker, we have more confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 18,
+                "contribution": -0.005316659671764226,
+                "value": "The lack of ownership of a telephone gives us confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 9,
+                "contribution": -0.004648187055687836,
+                "value": "The lack of a co-applicant or guarantor gives us confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 17,
+                "contribution": -0.00406494375953451,
+                "value": "The number of people that are liable to provide maintenance for gives us confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 12,
+                "contribution": -0.002814804740232645,
+                "value": "Your age gives us confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 7,
+                "contribution": -0.0012932240478772546,
+                "value": "With the requested loan included, your installment rate is below the threshold."
+            },
+            {
+                "source": 0,
+                "feature": 10,
+                "contribution": -0.001024987424707709,
+                "value": "The duration of your current residence gives us confidence in your capabilities."
+            },
+            {
+                "source": 0,
+                "feature": 8,
+                "contribution": -0.0009957976148975097,
+                "value": "We have more confidence in providing loans to females in general."
+            },
+            {
+                "source": 0,
+                "feature": 13,
+                "contribution": -0.0,
+                "value": "Having no other installment plans gives us confidence in your capabilities."
+            }
+        ],
+        "base": 0.7865428920654144
+    }
+}

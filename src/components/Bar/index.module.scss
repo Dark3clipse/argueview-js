@@ -1,0 +1,58 @@
+@import "src/assets/scss/config-styles";
+
+
+.root{
+	text-align: center;
+	width: max-content;
+	@include flexbox(row, center, stretch)
+}
+
+.positive{
+	background-color: #1ed760;
+	border-color: #1db954;
+}
+
+.negative{
+	background-color: #ff7373;
+	border-color: #ce3737;
+}
+
+.neutral{
+	background-color: #0088ff;
+	border-color: #0055ff;
+}
+
+.center{
+	background-color: #000;
+	width: 0.0625rem;
+	height: 100%;
+}
+
+.left, .right{
+	@include flexbox(column, center, center);
+}
+
+.content{
+	opacity: 0;
+	transition: opacity 0.2s 0s ease-in-out;
+}
+.root:hover .content{
+	opacity: .8;
+}
+.contentOutside{
+	@include flexbox(column, center, center);
+}
+.selected{
+	opacity: .8;
+}
+
+@include media(">750px"){
+	.root{
+		font-size: 0.8rem;
+	}
+}
+@include media("<=750px"){
+	.root{
+		font-size: 0.75rem;
+	}
+}

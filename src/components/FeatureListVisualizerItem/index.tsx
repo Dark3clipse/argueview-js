@@ -1,7 +1,8 @@
 import React from "react";
+import Bar from "./../Bar";
 import {argmax} from "./../../argmax";
 import Badge, {BadgeDirection} from "./../Badge";
-import {Framing, LatentContinuousTargetDisplay} from "./../FeatureListVisualizer";
+import {Framing, LatentContinuousTargetDisplay, VisualizationType} from "./../FeatureListVisualizer";
 import styles from "./../FeatureListVisualizerItem/index.module.scss";
 import {ExplanationObject, Feature} from "../../IExplanation";
 
@@ -11,15 +12,25 @@ interface MyProps{
 	feature: Feature;
 	value: number;
 	contribution?: number;
+	maxContribution?: number;
 	parity?: boolean;
 	framing?: Framing;
 	explanation: ExplanationObject;
 	rationale?: string;
 	lct?: LatentContinuousTargetDisplay;
+	visualization?: VisualizationType;
+	thresholdBadge: number;
 }
 
 interface MyState{
 	collapsed: boolean;
+	hover: boolean;
+}
+
+export interface BadgeData{
+	sign?: number;
+	label?: string;
+	framing?: "positive" | "negative" | "neutral";
 }
 
 export default class FeatureListVisualizerItem extends React.Component<MyProps, MyState> {
@@ -27,31 +38,38 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 		className: "",
 		parity: true,
 		contribution: 0,
+		maxContribution: 1,
 		framing: "positive",
 		lct: "label",
-		rationale: ""
+		rationale: "",
+		visualization: "badge"
 	}
 
 
 	constructor(p){
 		super(p);
 		this.state = {
-			collapsed: false
+			collapsed: false,
+			hover: false
 		}
 	}
 
 	public render() {
-		return (<div className={[styles.root, this.props.className, this.props.parity?styles.parity:null].join(' ')} onClick={()=>this.setState({collapsed: !this.state.collapsed})}>
+		const d = this.badgeData();
+		const threshold = (Math.abs(this.props.contribution) > this.props.thresholdBadge);
+		return (<div className={[styles.root, this.props.className, this.props.parity?styles.parity:null].join(' ')} onClick={()=>this.setState({collapsed: !this.state.collapsed})} onMouseEnter={()=>this.setState({hover: true})} onMouseLeave={()=>this.setState({hover: false})}>
 			<div className={styles.top}>
 				<div className={styles.contribution}>
-					{this.props.contribution != 0 &&
-					<Badge className={styles.badge} contribution={Math.abs(this.props.contribution)} label={this.label()} sign={this.sign()} framing={this.framing()} />}
+					{this.props.visualization == "badge" && threshold &&
+					<Badge className={[styles.visualization, styles.badge].join(' ')} contribution={Math.abs(this.props.contribution)} label={d.label} sign={d.sign} framing={d.framing} />}
+					{this.props.visualization == "bar" &&
+					<Bar className={[styles.visualization, styles.bar].join(' ')} contribution={threshold?Math.abs(this.props.contribution):0} maxContribution={this.props.maxContribution} label={d.label} sign={d.sign} framing={d.framing} selected={this.state.collapsed || this.state.hover}/>}
 				</div>
-				<div className={styles.label}>
+				<div className={[styles.label, styles.topPadding].join(' ')}>
 					<a className={styles.label}>{this.props.feature.name}</a>
 					<a className={styles.stackedValue}>{this.props.feature.nominal_value?this.props.feature.nominal_value[this.props.value]:this.props.value}</a>
 				</div>
-				<div className={styles.value}>
+				<div className={[styles.value, styles.topPadding].join(' ')}>
 					<a>{this.props.feature.nominal_value?this.props.feature.nominal_value[this.props.value]:this.props.value}</a>
 				</div>
 			</div>
@@ -87,84 +105,72 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 		const mcc = e.data.latent_continuous_target ? e.data.latent_continuous_target.mapping[cls] : 0;
 		if (mcc > 0){
 			g = "positive";
-		}else{
+		}else if (mcc < 0){
 			g = "negative";
-		}
-		return g;
-	}
-
-	/**Determine the direction the explanation should be framed in.
-	 * @returns {BadgeDirection} */
-	private framing_global_target(): BadgeDirection{
-		let g: BadgeDirection;
-		if (this.props.framing != "original"){
-			g = this.props.framing;
 		}else{
-			const e = this.props.explanation;
-			g = this.framing_global_default();
+			g = "neutral"
 		}
 		return g;
 	}
 
-	/**Determine the direction this item should be framed in.
-	 * @returns {BadgeDirection} */
-	public framing(): BadgeDirection{
-		const should = this.framing_global_target();
+	private featureDirection(): "+label" | "-label" | "+decision" | "-decision" | "neutral"{
 		const is = this.framing_global_default();
-		let r: BadgeDirection = is;
 
-		// flip function
-		const flip = ()=>{
-			if (r == "positive"){
-				r = "negative";
-			}else{
-				r = "positive";
-			}
+		if (this.props.contribution==0){
+			return "neutral";
+		}
+		if (is == "positive"){ 										// class = applicable -> +contrib = +applicable
+			return (this.props.contribution>0?"+label":"-label");
+		}else if (is == "negative"){ 								// class = inapplicable -> +contrib = -applicable
+			return (this.props.contribution>0?"-label":"+label");
+		}else{
+			return (this.props.contribution>0?"+decision":"-decision");
+		}
+	}
+
+	private badgeData(): BadgeData{
+		const e = this.props.explanation;
+		const r: BadgeData = {};
+		const is = this.framing_global_default();
+		const d = this.featureDirection();
+
+		// badge label
+		switch(this.props.lct){
+			case "none":
+				r.label = "";
+				break;
+			case "label":
+				r.label = e.data.latent_continuous_target.label;
+				break;
+			case "anti-label":
+				r.label = e.data.latent_continuous_target.anti_label;
+				break;
 		}
 
-		if (is != should){
-			flip();
+		// sign
+		if (((is == "positive" 	&& ((d == "+label" && this.props.lct != "anti-label") 	|| (d == "-label" && this.props.lct == "anti-label"))) ||
+			(is == "negative" 	&& ((d == "+label" && this.props.lct == "label") 		|| (d == "-label" && this.props.lct != "label"))) ||
+			(is == "neutral"	&& (d == "+decision")))
+			&& this.props.contribution != 0){
+			r.sign = 1;
+		}else if (d!="neutral" && this.props.contribution != 0){
+			r.sign = -1;
+		}else{
+			r.sign = 0;
 		}
 
-		if (this.sign()==-1){
-			flip();
-		}
-
-		if (this.props.lct=="anti-label"){
-			flip();
+		// color
+		if (((is == "positive" 	&& ((d == "+label" && this.props.framing != "negative") 	|| (d == "-label" && this.props.framing == "negative"))) ||
+			(is == "negative" 	&& ((d == "+label" && this.props.framing == "positive") 	|| (d == "-label" && this.props.framing != "positive"))) ||
+			(is == "neutral"	&& (d == "+decision")))
+			&& this.props.contribution != 0){
+			r.framing = "positive";
+		}else if (d!="neutral" && this.props.contribution != 0){
+			r.framing = "negative";
+		}else{
+			r.framing = "neutral";
 		}
 
 		return r;
-	}
-
-	/**Compute sign of this item based on the framing and lct.
-	 * @returns {number} `1` or `-1`. */
-	public sign(): number{
-		let sign = this.props.contribution / Math.abs(this.props.contribution);
-
-		if (this.props.lct == "anti-label"){
-			// signs must be reversed because we frame according to anti-labels.
-			sign *= -1;
-		}
-
-		return sign;
-	}
-
-	public label(): string{
-		const e = this.props.explanation;
-
-		// compute signed contribution
-		const c = Math.abs(this.props.contribution) * this.sign();
-
-		// determine labels
-		if (this.props.lct == "none"){
-			return c > 0 ? "positive" : "negative";
-		}else{
-			if (this.props.lct == "label"){
-				return e.data.latent_continuous_target.label;
-			}else{
-				return e.data.latent_continuous_target.anti_label;
-			}
-		}
 	}
 }

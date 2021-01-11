@@ -5,6 +5,8 @@ import {afterEach, beforeEach, expect, it} from "@jest/globals";
 import FeatureListVisualizer from "../../src/components/FeatureListVisualizer";
 import {ExplanationObject} from "../../src/IExplanation";
 import explanation from "../explanation.json";
+import explanationNegative from "../explanation_negative.json";
+import explanationExceptions from "../explanation_exceptions.json";
 import ReactTestUtils from 'react-dom/test-utils';
 
 
@@ -22,125 +24,242 @@ afterEach(() => {
 	container = null;
 });
 
-it("renders with varying framing, lct, and thresholds", () => {
+class BadgeExpectation{
+	sign: "-" | "+" | "neutral";
+	label: "" | "applicability" | "inapplicability";
+	color: "green" | "red" | "blue";
+}
+const badgeExpectation = (classLabel: string, framing: string, lct: string, featureDirection: string): BadgeExpectation => {
+	const e = new BadgeExpectation();
 
-	// predefined expected results
-	const rPosNone = "ContributionPropertyValue+8.09% positivechecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.+0.39% positiveduration2424Rationale:We believe the duration of the credit is appropriate.Description:Duration in months+0.01% positivecredit_historydelayed previouslydelayed previouslyRationale:Your credit history gives us confidence in your capabilities.Description:Credit history (credits taken, paid back duly, delays, critical accounts)+0.08% positivepurposefurniture/equipmentfurniture/equipmentRationale:We are interested in providing loans for the purpose of buying a radio or tv.Description:Purpose of the credit (car, television,...)+0.42% positivecredit_amount13761376Rationale:Your credit amount gives us confidence in your capabilities.Description:Credit amount+5.11% positivesavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.+0.14% positiveemployment>=7>=7Rationale:The duration of your current employment gives us confidence in your capabilities.Description:Present employment, in number of years.-0.13% negativeinstallment_commitment44Rationale:With the requested loan included, your installment rate is below the threshold.Description:Installment rate in percentage of disposable income-0.10% negativepersonal_statusfemale singlefemale singleRationale:We have more confidence in providing loans to females in general.Description:Personal status (married, single,...) and sex-0.46% negativeother_partiesco applicantco applicantRationale:The lack of a co-applicant or guarantor gives us confidence in your capabilities.Description:Other debtors / guarantors-0.10% negativeresidence_since11Rationale:The duration of your current residence gives us confidence in your capabilities.Description:Present residence since X years-1.88% negativeproperty_magnitudeno known propertyno known propertyRationale:The fact that you own a car gives us confidence in your capabilities.Description:Property (e.g. real estate)-0.28% negativeage2828Rationale:Your age gives us confidence in your capabilities.Description:Age in yearsother_payment_plansstoresstoresDescription:Other installment plans (banks, stores)+0.37% positivehousingownownRationale:Living in owned housing increases the confidence we have in your capabilities.Description:Housing (rent, own,...)+0.29% positiveexisting_credits11Rationale:The amount of your credits gives us confidence in your capabilities.Description:Number of existing credits at this bank+0.22% positivejobunemp/unskilled non resunemp/unskilled non resRationale:Your current employment responsibilities supports our confidence in your capabilities.Description:Job-0.41% negativenum_dependents11Rationale:The number of people that are liable to provide maintenance for gives us confidence in your capabilities.Description:Number of people being liable to provide maintenance for-0.53% negativeown_telephonenonenoneRationale:The lack of ownership of a telephone gives us confidence in your capabilities.Description:Telephone (yes,no)-1.23% negativeforeign_workernonoRationale:Because you are a foreign worker, we have more confidence in your capabilities.Description:Foreign worker (yes,no)+78.65% positiveintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rNegNone = "ContributionPropertyValue+8.09% positivechecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.+0.39% positiveduration2424Rationale:We believe the duration of the credit is appropriate.Description:Duration in months+0.01% positivecredit_historydelayed previouslydelayed previouslyRationale:Your credit history gives us confidence in your capabilities.Description:Credit history (credits taken, paid back duly, delays, critical accounts)+0.08% positivepurposefurniture/equipmentfurniture/equipmentRationale:We are interested in providing loans for the purpose of buying a radio or tv.Description:Purpose of the credit (car, television,...)+0.42% positivecredit_amount13761376Rationale:Your credit amount gives us confidence in your capabilities.Description:Credit amount+5.11% positivesavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.+0.14% positiveemployment>=7>=7Rationale:The duration of your current employment gives us confidence in your capabilities.Description:Present employment, in number of years.-0.13% negativeinstallment_commitment44Rationale:With the requested loan included, your installment rate is below the threshold.Description:Installment rate in percentage of disposable income-0.10% negativepersonal_statusfemale singlefemale singleRationale:We have more confidence in providing loans to females in general.Description:Personal status (married, single,...) and sex-0.46% negativeother_partiesco applicantco applicantRationale:The lack of a co-applicant or guarantor gives us confidence in your capabilities.Description:Other debtors / guarantors-0.10% negativeresidence_since11Rationale:The duration of your current residence gives us confidence in your capabilities.Description:Present residence since X years-1.88% negativeproperty_magnitudeno known propertyno known propertyRationale:The fact that you own a car gives us confidence in your capabilities.Description:Property (e.g. real estate)-0.28% negativeage2828Rationale:Your age gives us confidence in your capabilities.Description:Age in yearsother_payment_plansstoresstoresDescription:Other installment plans (banks, stores)+0.37% positivehousingownownRationale:Living in owned housing increases the confidence we have in your capabilities.Description:Housing (rent, own,...)+0.29% positiveexisting_credits11Rationale:The amount of your credits gives us confidence in your capabilities.Description:Number of existing credits at this bank+0.22% positivejobunemp/unskilled non resunemp/unskilled non resRationale:Your current employment responsibilities supports our confidence in your capabilities.Description:Job-0.41% negativenum_dependents11Rationale:The number of people that are liable to provide maintenance for gives us confidence in your capabilities.Description:Number of people being liable to provide maintenance for-0.53% negativeown_telephonenonenoneRationale:The lack of ownership of a telephone gives us confidence in your capabilities.Description:Telephone (yes,no)-1.23% negativeforeign_workernonoRationale:Because you are a foreign worker, we have more confidence in your capabilities.Description:Foreign worker (yes,no)+78.65% positiveintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rPosLbl = "ContributionPropertyValue+8.09% applicabilitychecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.+0.39% applicabilityduration2424Rationale:We believe the duration of the credit is appropriate.Description:Duration in months+0.01% applicabilitycredit_historydelayed previouslydelayed previouslyRationale:Your credit history gives us confidence in your capabilities.Description:Credit history (credits taken, paid back duly, delays, critical accounts)+0.08% applicabilitypurposefurniture/equipmentfurniture/equipmentRationale:We are interested in providing loans for the purpose of buying a radio or tv.Description:Purpose of the credit (car, television,...)+0.42% applicabilitycredit_amount13761376Rationale:Your credit amount gives us confidence in your capabilities.Description:Credit amount+5.11% applicabilitysavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.+0.14% applicabilityemployment>=7>=7Rationale:The duration of your current employment gives us confidence in your capabilities.Description:Present employment, in number of years.-0.13% applicabilityinstallment_commitment44Rationale:With the requested loan included, your installment rate is below the threshold.Description:Installment rate in percentage of disposable income-0.10% applicabilitypersonal_statusfemale singlefemale singleRationale:We have more confidence in providing loans to females in general.Description:Personal status (married, single,...) and sex-0.46% applicabilityother_partiesco applicantco applicantRationale:The lack of a co-applicant or guarantor gives us confidence in your capabilities.Description:Other debtors / guarantors-0.10% applicabilityresidence_since11Rationale:The duration of your current residence gives us confidence in your capabilities.Description:Present residence since X years-1.88% applicabilityproperty_magnitudeno known propertyno known propertyRationale:The fact that you own a car gives us confidence in your capabilities.Description:Property (e.g. real estate)-0.28% applicabilityage2828Rationale:Your age gives us confidence in your capabilities.Description:Age in yearsother_payment_plansstoresstoresDescription:Other installment plans (banks, stores)+0.37% applicabilityhousingownownRationale:Living in owned housing increases the confidence we have in your capabilities.Description:Housing (rent, own,...)+0.29% applicabilityexisting_credits11Rationale:The amount of your credits gives us confidence in your capabilities.Description:Number of existing credits at this bank+0.22% applicabilityjobunemp/unskilled non resunemp/unskilled non resRationale:Your current employment responsibilities supports our confidence in your capabilities.Description:Job-0.41% applicabilitynum_dependents11Rationale:The number of people that are liable to provide maintenance for gives us confidence in your capabilities.Description:Number of people being liable to provide maintenance for-0.53% applicabilityown_telephonenonenoneRationale:The lack of ownership of a telephone gives us confidence in your capabilities.Description:Telephone (yes,no)-1.23% applicabilityforeign_workernonoRationale:Because you are a foreign worker, we have more confidence in your capabilities.Description:Foreign worker (yes,no)+78.65% applicabilityintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rNegLbl = "ContributionPropertyValue+8.09% applicabilitychecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.+0.39% applicabilityduration2424Rationale:We believe the duration of the credit is appropriate.Description:Duration in months+0.01% applicabilitycredit_historydelayed previouslydelayed previouslyRationale:Your credit history gives us confidence in your capabilities.Description:Credit history (credits taken, paid back duly, delays, critical accounts)+0.08% applicabilitypurposefurniture/equipmentfurniture/equipmentRationale:We are interested in providing loans for the purpose of buying a radio or tv.Description:Purpose of the credit (car, television,...)+0.42% applicabilitycredit_amount13761376Rationale:Your credit amount gives us confidence in your capabilities.Description:Credit amount+5.11% applicabilitysavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.+0.14% applicabilityemployment>=7>=7Rationale:The duration of your current employment gives us confidence in your capabilities.Description:Present employment, in number of years.-0.13% applicabilityinstallment_commitment44Rationale:With the requested loan included, your installment rate is below the threshold.Description:Installment rate in percentage of disposable income-0.10% applicabilitypersonal_statusfemale singlefemale singleRationale:We have more confidence in providing loans to females in general.Description:Personal status (married, single,...) and sex-0.46% applicabilityother_partiesco applicantco applicantRationale:The lack of a co-applicant or guarantor gives us confidence in your capabilities.Description:Other debtors / guarantors-0.10% applicabilityresidence_since11Rationale:The duration of your current residence gives us confidence in your capabilities.Description:Present residence since X years-1.88% applicabilityproperty_magnitudeno known propertyno known propertyRationale:The fact that you own a car gives us confidence in your capabilities.Description:Property (e.g. real estate)-0.28% applicabilityage2828Rationale:Your age gives us confidence in your capabilities.Description:Age in yearsother_payment_plansstoresstoresDescription:Other installment plans (banks, stores)+0.37% applicabilityhousingownownRationale:Living in owned housing increases the confidence we have in your capabilities.Description:Housing (rent, own,...)+0.29% applicabilityexisting_credits11Rationale:The amount of your credits gives us confidence in your capabilities.Description:Number of existing credits at this bank+0.22% applicabilityjobunemp/unskilled non resunemp/unskilled non resRationale:Your current employment responsibilities supports our confidence in your capabilities.Description:Job-0.41% applicabilitynum_dependents11Rationale:The number of people that are liable to provide maintenance for gives us confidence in your capabilities.Description:Number of people being liable to provide maintenance for-0.53% applicabilityown_telephonenonenoneRationale:The lack of ownership of a telephone gives us confidence in your capabilities.Description:Telephone (yes,no)-1.23% applicabilityforeign_workernonoRationale:Because you are a foreign worker, we have more confidence in your capabilities.Description:Foreign worker (yes,no)+78.65% applicabilityintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rPosAlbl = "ContributionPropertyValue-8.09% inapplicabilitychecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.-0.39% inapplicabilityduration2424Rationale:We believe the duration of the credit is appropriate.Description:Duration in months-0.01% inapplicabilitycredit_historydelayed previouslydelayed previouslyRationale:Your credit history gives us confidence in your capabilities.Description:Credit history (credits taken, paid back duly, delays, critical accounts)-0.08% inapplicabilitypurposefurniture/equipmentfurniture/equipmentRationale:We are interested in providing loans for the purpose of buying a radio or tv.Description:Purpose of the credit (car, television,...)-0.42% inapplicabilitycredit_amount13761376Rationale:Your credit amount gives us confidence in your capabilities.Description:Credit amount-5.11% inapplicabilitysavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.-0.14% inapplicabilityemployment>=7>=7Rationale:The duration of your current employment gives us confidence in your capabilities.Description:Present employment, in number of years.+0.13% inapplicabilityinstallment_commitment44Rationale:With the requested loan included, your installment rate is below the threshold.Description:Installment rate in percentage of disposable income+0.10% inapplicabilitypersonal_statusfemale singlefemale singleRationale:We have more confidence in providing loans to females in general.Description:Personal status (married, single,...) and sex+0.46% inapplicabilityother_partiesco applicantco applicantRationale:The lack of a co-applicant or guarantor gives us confidence in your capabilities.Description:Other debtors / guarantors+0.10% inapplicabilityresidence_since11Rationale:The duration of your current residence gives us confidence in your capabilities.Description:Present residence since X years+1.88% inapplicabilityproperty_magnitudeno known propertyno known propertyRationale:The fact that you own a car gives us confidence in your capabilities.Description:Property (e.g. real estate)+0.28% inapplicabilityage2828Rationale:Your age gives us confidence in your capabilities.Description:Age in yearsother_payment_plansstoresstoresDescription:Other installment plans (banks, stores)-0.37% inapplicabilityhousingownownRationale:Living in owned housing increases the confidence we have in your capabilities.Description:Housing (rent, own,...)-0.29% inapplicabilityexisting_credits11Rationale:The amount of your credits gives us confidence in your capabilities.Description:Number of existing credits at this bank-0.22% inapplicabilityjobunemp/unskilled non resunemp/unskilled non resRationale:Your current employment responsibilities supports our confidence in your capabilities.Description:Job+0.41% inapplicabilitynum_dependents11Rationale:The number of people that are liable to provide maintenance for gives us confidence in your capabilities.Description:Number of people being liable to provide maintenance for+0.53% inapplicabilityown_telephonenonenoneRationale:The lack of ownership of a telephone gives us confidence in your capabilities.Description:Telephone (yes,no)+1.23% inapplicabilityforeign_workernonoRationale:Because you are a foreign worker, we have more confidence in your capabilities.Description:Foreign worker (yes,no)-78.65% inapplicabilityintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rNegAlbl = "ContributionPropertyValue-8.09% inapplicabilitychecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.-0.39% inapplicabilityduration2424Rationale:We believe the duration of the credit is appropriate.Description:Duration in months-0.01% inapplicabilitycredit_historydelayed previouslydelayed previouslyRationale:Your credit history gives us confidence in your capabilities.Description:Credit history (credits taken, paid back duly, delays, critical accounts)-0.08% inapplicabilitypurposefurniture/equipmentfurniture/equipmentRationale:We are interested in providing loans for the purpose of buying a radio or tv.Description:Purpose of the credit (car, television,...)-0.42% inapplicabilitycredit_amount13761376Rationale:Your credit amount gives us confidence in your capabilities.Description:Credit amount-5.11% inapplicabilitysavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.-0.14% inapplicabilityemployment>=7>=7Rationale:The duration of your current employment gives us confidence in your capabilities.Description:Present employment, in number of years.+0.13% inapplicabilityinstallment_commitment44Rationale:With the requested loan included, your installment rate is below the threshold.Description:Installment rate in percentage of disposable income+0.10% inapplicabilitypersonal_statusfemale singlefemale singleRationale:We have more confidence in providing loans to females in general.Description:Personal status (married, single,...) and sex+0.46% inapplicabilityother_partiesco applicantco applicantRationale:The lack of a co-applicant or guarantor gives us confidence in your capabilities.Description:Other debtors / guarantors+0.10% inapplicabilityresidence_since11Rationale:The duration of your current residence gives us confidence in your capabilities.Description:Present residence since X years+1.88% inapplicabilityproperty_magnitudeno known propertyno known propertyRationale:The fact that you own a car gives us confidence in your capabilities.Description:Property (e.g. real estate)+0.28% inapplicabilityage2828Rationale:Your age gives us confidence in your capabilities.Description:Age in yearsother_payment_plansstoresstoresDescription:Other installment plans (banks, stores)-0.37% inapplicabilityhousingownownRationale:Living in owned housing increases the confidence we have in your capabilities.Description:Housing (rent, own,...)-0.29% inapplicabilityexisting_credits11Rationale:The amount of your credits gives us confidence in your capabilities.Description:Number of existing credits at this bank-0.22% inapplicabilityjobunemp/unskilled non resunemp/unskilled non resRationale:Your current employment responsibilities supports our confidence in your capabilities.Description:Job+0.41% inapplicabilitynum_dependents11Rationale:The number of people that are liable to provide maintenance for gives us confidence in your capabilities.Description:Number of people being liable to provide maintenance for+0.53% inapplicabilityown_telephonenonenoneRationale:The lack of ownership of a telephone gives us confidence in your capabilities.Description:Telephone (yes,no)+1.23% inapplicabilityforeign_workernonoRationale:Because you are a foreign worker, we have more confidence in your capabilities.Description:Foreign worker (yes,no)-78.65% inapplicabilityintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rThresholdBadge1 = "ContributionPropertyValue+8.09% positivechecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.duration2424Description:Duration in monthscredit_historydelayed previouslydelayed previouslyDescription:Credit history (credits taken, paid back duly, delays, critical accounts)purposefurniture/equipmentfurniture/equipmentDescription:Purpose of the credit (car, television,...)credit_amount13761376Description:Credit amount+5.11% positivesavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.employment>=7>=7Description:Present employment, in number of years.installment_commitment44Description:Installment rate in percentage of disposable incomepersonal_statusfemale singlefemale singleDescription:Personal status (married, single,...) and sexother_partiesco applicantco applicantDescription:Other debtors / guarantorsresidence_since11Description:Present residence since X years-1.88% negativeproperty_magnitudeno known propertyno known propertyRationale:The fact that you own a car gives us confidence in your capabilities.Description:Property (e.g. real estate)age2828Description:Age in yearsother_payment_plansstoresstoresDescription:Other installment plans (banks, stores)housingownownDescription:Housing (rent, own,...)existing_credits11Description:Number of existing credits at this bankjobunemp/unskilled non resunemp/unskilled non resDescription:Jobnum_dependents11Description:Number of people being liable to provide maintenance forown_telephonenonenoneDescription:Telephone (yes,no)-1.23% negativeforeign_workernonoRationale:Because you are a foreign worker, we have more confidence in your capabilities.Description:Foreign worker (yes,no)+78.65% positiveintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rThresholdBadge2 = "ContributionPropertyValue+8.09% positivechecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.duration2424Description:Duration in monthscredit_historydelayed previouslydelayed previouslyDescription:Credit history (credits taken, paid back duly, delays, critical accounts)purposefurniture/equipmentfurniture/equipmentDescription:Purpose of the credit (car, television,...)credit_amount13761376Description:Credit amount+5.11% positivesavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.employment>=7>=7Description:Present employment, in number of years.installment_commitment44Description:Installment rate in percentage of disposable incomepersonal_statusfemale singlefemale singleDescription:Personal status (married, single,...) and sexother_partiesco applicantco applicantDescription:Other debtors / guarantorsresidence_since11Description:Present residence since X yearsproperty_magnitudeno known propertyno known propertyDescription:Property (e.g. real estate)age2828Description:Age in yearsother_payment_plansstoresstoresDescription:Other installment plans (banks, stores)housingownownDescription:Housing (rent, own,...)existing_credits11Description:Number of existing credits at this bankjobunemp/unskilled non resunemp/unskilled non resDescription:Jobnum_dependents11Description:Number of people being liable to provide maintenance forown_telephonenonenoneDescription:Telephone (yes,no)foreign_workernonoDescription:Foreign worker (yes,no)+78.65% positiveintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rThresholdBadge3 = "ContributionPropertyValuechecking_statusno checkingno checkingDescription:Status of existing checking account, in Deutsche Mark.duration2424Description:Duration in monthscredit_historydelayed previouslydelayed previouslyDescription:Credit history (credits taken, paid back duly, delays, critical accounts)purposefurniture/equipmentfurniture/equipmentDescription:Purpose of the credit (car, television,...)credit_amount13761376Description:Credit amountsavings_status<100<100Description:Status of savings account/bonds, in Deutsche Mark.employment>=7>=7Description:Present employment, in number of years.installment_commitment44Description:Installment rate in percentage of disposable incomepersonal_statusfemale singlefemale singleDescription:Personal status (married, single,...) and sexother_partiesco applicantco applicantDescription:Other debtors / guarantorsresidence_since11Description:Present residence since X yearsproperty_magnitudeno known propertyno known propertyDescription:Property (e.g. real estate)age2828Description:Age in yearsother_payment_plansstoresstoresDescription:Other installment plans (banks, stores)housingownownDescription:Housing (rent, own,...)existing_credits11Description:Number of existing credits at this bankjobunemp/unskilled non resunemp/unskilled non resDescription:Jobnum_dependents11Description:Number of people being liable to provide maintenance forown_telephonenonenoneDescription:Telephone (yes,no)foreign_workernonoDescription:Foreign worker (yes,no)+78.65% positiveintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rThresholdOmit1 = "ContributionPropertyValue+8.09% positivechecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.+0.39% positiveduration2424Rationale:We believe the duration of the credit is appropriate.Description:Duration in months+0.42% positivecredit_amount13761376Rationale:Your credit amount gives us confidence in your capabilities.Description:Credit amount+5.11% positivesavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.+0.14% positiveemployment>=7>=7Rationale:The duration of your current employment gives us confidence in your capabilities.Description:Present employment, in number of years.-0.13% negativeinstallment_commitment44Rationale:With the requested loan included, your installment rate is below the threshold.Description:Installment rate in percentage of disposable income-0.46% negativeother_partiesco applicantco applicantRationale:The lack of a co-applicant or guarantor gives us confidence in your capabilities.Description:Other debtors / guarantors-0.10% negativeresidence_since11Rationale:The duration of your current residence gives us confidence in your capabilities.Description:Present residence since X years-1.88% negativeproperty_magnitudeno known propertyno known propertyRationale:The fact that you own a car gives us confidence in your capabilities.Description:Property (e.g. real estate)-0.28% negativeage2828Rationale:Your age gives us confidence in your capabilities.Description:Age in years+0.37% positivehousingownownRationale:Living in owned housing increases the confidence we have in your capabilities.Description:Housing (rent, own,...)+0.29% positiveexisting_credits11Rationale:The amount of your credits gives us confidence in your capabilities.Description:Number of existing credits at this bank+0.22% positivejobunemp/unskilled non resunemp/unskilled non resRationale:Your current employment responsibilities supports our confidence in your capabilities.Description:Job-0.41% negativenum_dependents11Rationale:The number of people that are liable to provide maintenance for gives us confidence in your capabilities.Description:Number of people being liable to provide maintenance for-0.53% negativeown_telephonenonenoneRationale:The lack of ownership of a telephone gives us confidence in your capabilities.Description:Telephone (yes,no)-1.23% negativeforeign_workernonoRationale:Because you are a foreign worker, we have more confidence in your capabilities.Description:Foreign worker (yes,no)+78.65% positiveintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rThresholdOmit2 = "ContributionPropertyValue+8.09% positivechecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.+0.39% positiveduration2424Rationale:We believe the duration of the credit is appropriate.Description:Duration in months+0.42% positivecredit_amount13761376Rationale:Your credit amount gives us confidence in your capabilities.Description:Credit amount+5.11% positivesavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.-0.46% negativeother_partiesco applicantco applicantRationale:The lack of a co-applicant or guarantor gives us confidence in your capabilities.Description:Other debtors / guarantors-1.88% negativeproperty_magnitudeno known propertyno known propertyRationale:The fact that you own a car gives us confidence in your capabilities.Description:Property (e.g. real estate)+0.37% positivehousingownownRationale:Living in owned housing increases the confidence we have in your capabilities.Description:Housing (rent, own,...)-0.41% negativenum_dependents11Rationale:The number of people that are liable to provide maintenance for gives us confidence in your capabilities.Description:Number of people being liable to provide maintenance for-0.53% negativeown_telephonenonenoneRationale:The lack of ownership of a telephone gives us confidence in your capabilities.Description:Telephone (yes,no)-1.23% negativeforeign_workernonoRationale:Because you are a foreign worker, we have more confidence in your capabilities.Description:Foreign worker (yes,no)+78.65% positiveintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-	const rThresholdOmit3 = "ContributionPropertyValue+8.09% positivechecking_statusno checkingno checkingRationale:You have a sufficient amount on your checking account.Description:Status of existing checking account, in Deutsche Mark.+5.11% positivesavings_status<100<100Rationale:Your savings give us confidence in your capabilities.Description:Status of savings account/bonds, in Deutsche Mark.-1.88% negativeproperty_magnitudeno known propertyno known propertyRationale:The fact that you own a car gives us confidence in your capabilities.Description:Property (e.g. real estate)-1.23% negativeforeign_workernonoRationale:Because you are a foreign worker, we have more confidence in your capabilities.Description:Foreign worker (yes,no)+78.65% positiveintercept0.78654289206541440.7865428920654144Rationale:The intercept's contribution is the contribution independent of the other features.Description:Contribution independent of the features.";
-
-	// functions for getting label various elements from root
-	const lblFirst = (c): any => c.firstChild.children[1].firstChild.firstChild.firstChild; // first label element
-	const lblMid = (c): any => c.firstChild.children[8].firstChild.firstChild.firstChild; // label of first reversed item in example
-	const lblIcpt = (c): any => c.firstChild.lastChild.firstChild.firstChild.firstChild; // label of intercept
-
-	// function for testing badge framing
-	const testLabels = (c, reversed = false): any => {
-		const r1 = reversed?'negative':'positive';
-		const r2 = reversed?'positive':'negative';
-		expect(lblFirst(container).classList.contains(r1)).toBe(true);
-		expect(lblMid(container).classList.contains(r2)).toBe(true);
-		expect(lblIcpt(container).classList.contains(r1)).toBe(true);
+	// label
+	switch(lct){
+		case "none":
+			e.label = "";
+			break;
+		case "label":
+			e.label = "applicability";
+			break;
+		case "anti-label":
+			e.label = "inapplicability";
+			break;
 	}
 
-	// lct = none
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"none"} thresholdBadge={0} />, container);
-	});
-	expect(container.textContent).toBe(rPosNone);
-	testLabels(container, false);
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"positive"} lct={"none"} thresholdBadge={0} />, container);
-	});
-	expect(container.textContent).toBe(rPosNone);
-	testLabels(container, false);
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"negative"} lct={"none"} thresholdBadge={0} />, container);
-	});
-	expect(container.textContent).toBe(rNegNone);
-	testLabels(container, true);
+	// sign
+	if ((classLabel == "applicable" 	&& ((featureDirection == "+applicable" && lct != "anti-label") 	|| (featureDirection == "-applicable" && lct == "anti-label"))) ||
+		(classLabel == "inapplicable" 	&& ((featureDirection == "+applicable" && lct == "label") 		|| (featureDirection == "-applicable" && lct != "label"))) ||
+		(classLabel == "exceptions"	&& (featureDirection == "+applicable"))){
+		e.sign = "+";
+	}else if (featureDirection!="neutral"){
+		e.sign = "-";
+	}else{
+		e.sign = "neutral";
+	}
 
+	// color
+	if ((classLabel == "applicable" 	&& ((featureDirection == "+applicable" && framing != "negative") || (featureDirection == "-applicable" && framing == "negative"))) ||
+		(classLabel == "inapplicable" 	&& ((featureDirection == "+applicable" && framing == "positive") || (featureDirection == "-applicable" && framing != "positive"))) ||
+		(classLabel == "exceptions"	&& (featureDirection == "+applicable"))){
+		e.color = "green";
+	}else if (featureDirection!="neutral"){
+		e.color = "red";
+	}else{
+		e.color = "blue";
+	}
 
-	// lct = label
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"label"} thresholdBadge={0} />, container);
-	});
-	expect(container.textContent).toBe(rPosLbl);
-	testLabels(container, false);
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"positive"} lct={"label"} thresholdBadge={0} />, container);
-	});
-	expect(container.textContent).toBe(rPosLbl);
-	testLabels(container, false);
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"negative"} lct={"label"} thresholdBadge={0} />, container);
-	});
-	expect(container.textContent).toBe(rNegLbl);
-	testLabels(container, true);
+	return e;
+}
 
+const classLabels = ["applicable", "inapplicable", "exceptions"];
+const framing = ["decision-class", "positive", "negative"];
+const lct = ["none", "label", "anti-label"];
+const featureDirection = ["+applicable", "-applicable", "neutral"];
+for (let c of classLabels){
+	for (let d of featureDirection){
+		for (let l of lct){
+			for (let f of framing){
+				const e = badgeExpectation(c, f, l, d);
+				const exp = c=="exceptions"?explanationExceptions:(c=="applicable"?explanation:explanationNegative);
 
-	// lct = anti-label
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"anti-label"} thresholdBadge={0} />, container);
-	});
-	expect(container.textContent).toBe(rPosAlbl);
-	testLabels(container, false);
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"positive"} lct={"anti-label"} thresholdBadge={0} />, container);
-	});
-	expect(container.textContent).toBe(rPosAlbl);
-	testLabels(container, false);
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"negative"} lct={"anti-label"} thresholdBadge={0} />, container);
-	});
-	expect(container.textContent).toBe(rNegAlbl);
-	testLabels(container, true);
+				if (c=="exceptions" && l != "none"){
 
+					// test errors
+					for (let vis of ["badge", "bar"]){
+						it("should show an error when explanation has no lct but lct labels are requested", ()=> {
+							// render component
+							act(() => {
+								render(<FeatureListVisualizer explanation={exp as ExplanationObject} framing={f as any} lct={l as any} visualization={vis as any} />, container);
+							});
+							expect(container.textContent).toBe("Cannot render with a latent continuous target: not defined in explanation.If this explanation was created in Python, make sure you call ArgueView.latent_continuous_target() prior to saving your explanation.");
+						});
+					}
 
-	// thresholdBadge variations
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"none"} thresholdBadge={0.01} />, container);
-	});
-	expect(container.textContent).toBe(rThresholdBadge1);
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"none"} thresholdBadge={0.03} />, container);
-	});
-	expect(container.textContent).toBe(rThresholdBadge2);
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"none"} thresholdBadge={0.1} />, container);
-	});
-	expect(container.textContent).toBe(rThresholdBadge3);
+				}else{
 
+					// test badge
+					it(`renders badge '${e.sign}${e.label} (${e.color})' given: class='${c}', feature: '${d}', lct: '${l}', framing: '${f}'`, ()=>{
+						act(() => {
+							render(<FeatureListVisualizer explanation={exp as ExplanationObject} framing={f as any} lct={l as any} visualization={"badge"} thresholdBadge={-1} />, container);
+						});
 
-	// thresholdOmit variations
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"none"} thresholdBadge={0} thresholdOmit={0.001} />, container);
-	});
-	expect(container.textContent).toBe(rThresholdOmit1);
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"none"} thresholdBadge={0} thresholdOmit={0.003} />, container);
-	});
-	expect(container.textContent).toBe(rThresholdOmit2);
-	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"none"} thresholdBadge={0} thresholdOmit={0.007} />, container);
-	});
-	expect(container.textContent).toBe(rThresholdOmit3);
-});
+						// obtain badge label
+						let lbl;
+						if (c=="applicable" || c=="exceptions"){
+							if (d == "+applicable"){
+								lbl = container.firstChild.children[1].firstChild.firstChild.firstChild; // use feature 'checking_status'
+							}else if (d == "-applicable"){
+								lbl = container.firstChild.children[8].firstChild.firstChild.firstChild; // use feature 'installment_commitment'
+							}else{
+								lbl = container.firstChild.children[14].firstChild.firstChild.firstChild; // use feature 'other_payment_plans'
+							}
+						}else{
+							if (d == "+applicable"){
+								lbl = container.firstChild.children[1].firstChild.firstChild.firstChild; // use feature 'checking_status'
+							}else if (d == "-applicable"){
+								lbl = container.firstChild.children[2].firstChild.firstChild.firstChild; // use feature 'duration'
+							}else{
+								lbl = container.firstChild.children[14].firstChild.firstChild.firstChild; // use feature 'other_payment_plans'
+							}
+						}
+
+						// test badge label color
+						let cl = "neutral";
+						switch(e.color){
+							case "green": cl = "positive"; break;
+							case "red": cl = "negative"; break;
+						}
+						expect(lbl.classList.contains(cl)).toBe(true);
+
+						// test badge label sign
+						if (d != "neutral") {
+							expect(lbl.textContent.charAt(0)).toBe(e.sign);
+						}
+
+						// test badge label text
+						expect(lbl.textContent.replace(/[\+\-(0-9)\.\%\s]/g, "")).toBe(e.label);
+					});
+
+					// test bar
+					it(`renders bar '${e.sign}${e.label} (${e.color}, ${e.sign=="+"?"right":"left"})' given: class='${c}', feature: '${d}', lct: '${l}', framing: '${f}'`, ()=>{
+						act(() => {
+							render(<FeatureListVisualizer explanation={exp as ExplanationObject} framing={f as any} lct={l as any} visualization={"bar"} thresholdBadge={-1} />, container);
+						});
+
+						// obtain badge label
+						let bar;
+						if (c=="applicable" || c=="exceptions"){
+							if (d == "+applicable"){
+								bar = container.firstChild.children[1].firstChild.firstChild.firstChild; // use feature 'checking_status'
+							}else if (d == "-applicable"){
+								bar = container.firstChild.children[8].firstChild.firstChild.firstChild; // use feature 'installment_commitment'
+							}else{
+								bar = container.firstChild.children[14].firstChild.firstChild.firstChild; // use feature 'other_payment_plans'
+							}
+						}else{
+							if (d == "+applicable"){
+								bar = container.firstChild.children[1].firstChild.firstChild.firstChild; // use feature 'checking_status'
+							}else if (d == "-applicable"){
+								bar = container.firstChild.children[2].firstChild.firstChild.firstChild; // use feature 'duration'
+							}else{
+								bar = container.firstChild.children[14].firstChild.firstChild.firstChild; // use feature 'other_payment_plans'
+							}
+						}
+
+						// whether the bar is large (text within bar) or small (text outside bar)
+						const barSize = bar.children.length == 3 ? "large" : "small";
+						const barLeft = (barSize=="large" ? bar.children[0] : bar.children[1]);
+						const barRight = (barSize=="large" ? bar.children[2] : bar.children[3]);
+						const barDirection = (barLeft.style.visibility == "visible" ? "left" : "right");
+						const barActive = barDirection == "left" ? barLeft : barRight;
+						const barText = bar.children[0].textContent;
+
+						// test bar direction
+						if (d != "neutral"){
+							expect(barDirection).toBe(e.sign=="-"?"left":"right");
+						}
+
+						// test bar color
+						let cl = "neutral";
+						switch(e.color){
+							case "green": cl = "positive"; break;
+							case "red": cl = "negative"; break;
+						}
+						expect(barActive.classList.contains(cl)).toBe(true);
+
+						// test bar label sign
+						if (d != "neutral") {
+							expect(barText.charAt(0)).toBe(e.sign);
+
+							// test badge label text
+							expect(barText.replace(/[\+\-(0-9)\.\%\s]/g, "")).toBe(e.label);
+						}
+					});
+				}
+			}
+		}
+	}
+}
+
+const thresholdBadge = [-1, 0, 0.01, 0.03, 0.1];
+const thresholdBadgeExpectationsApplicable = [21, 20, 5, 3, 1];
+const thresholdBadgeExpectationsInapplicable = [21, 20, 5, 3, 1];
+const thresholdOmit = [-1, 0.001, 0.003, 0.007];
+const thresholdOmitExpectationsApplicable = [22, 18, 12, 6];
+const thresholdOmitExpectationsInapplicable = [22, 16, 11, 6];
+for (let i=0; i<thresholdBadge.length; i++) {
+	const tb = thresholdBadge[i];
+	for (let j=0; j<thresholdOmit.length; j++) {
+		const to = thresholdOmit[j];
+		if (tb > 0 && to != -1) continue;
+		it(`renders with: thresholdBadge=${tb}, thresholdOmit=${to}`, () => {
+			for (let c of classLabels) {
+				for (let d of featureDirection) {
+					for (let l of lct) {
+						for (let f of framing) {
+							for (let vis of ["badge", "bar"]) {
+
+								const test = ()=>{
+									// test #n of items -> omit thresholds
+									expect(container.firstChild.children.length).toBe((c == "applicable" || c == "exceptions") ? thresholdOmitExpectationsApplicable[j] : thresholdOmitExpectationsInapplicable[j]);
+
+									// test #n of badges
+									if (to == -1 && vis!="bar") {
+										const expectedPercentSymbols = ((c == "applicable" || c == "exceptions") ? thresholdBadgeExpectationsApplicable[i] : thresholdBadgeExpectationsInapplicable[i]) * (vis=="bar"?2:1);
+										expect((container.textContent.match(/%/g) || []).length).toBe(expectedPercentSymbols);
+									}
+								}
+
+								act(() => {
+									render(<FeatureListVisualizer
+										explanation={((c == "applicable" || c == "exceptions") ? explanation : explanationNegative) as ExplanationObject}
+										framing={f as any} lct={l as any} visualization={vis as any} thresholdBadge={tb}
+										thresholdOmit={to}/>, container);
+								});
+								test();
+
+								// test old syntax
+								if (to == -1){
+									act(() => {
+										render(<FeatureListVisualizer
+											explanation={((c == "applicable" || c == "exceptions") ? explanation : explanationNegative) as ExplanationObject}
+											framing={f as any} lct={l as any} visualization={vis as any} threshold={tb} />, container);
+									});
+									test();
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+	}
+}
 
 it("should sort on header click", ()=>{
 
 	// render component
 	act(() => {
-		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"original"} lct={"none"} thresholdBadge={0} />, container);
+		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"decision-class"} lct={"none"} thresholdBadge={0} />, container);
 	});
 
 	// obtain header element
@@ -198,4 +317,44 @@ it("should sort on header click", ()=>{
 		ReactTestUtils.Simulate.click(hName(container));
 	});
 	testAlphabeticalOrder("desc");
+});
+
+
+it("should expand and collapse on feature click", ()=>{
+
+	// render component
+	act(() => {
+		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"decision-class"} lct={"none"} />, container);
+	});
+
+	// obtain first feature element
+	const feature = container.firstChild.children[1];
+
+	// expect collapsed
+	expect(feature.children[1].classList.contains("hidden")).toBe(true);
+
+	// click feature
+	act(()=>{
+		ReactTestUtils.Simulate.click(feature);
+	});
+	expect(feature.children[1].classList.contains("hidden")).toBe(false);
+
+	// click feature again
+	act(()=>{
+		ReactTestUtils.Simulate.click(feature);
+	});
+	expect(feature.children[1].classList.contains("hidden")).toBe(true);
+});
+
+it("should alternate row colors", ()=>{
+
+	// render component
+	act(() => {
+		render(<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"decision-class"} lct={"none"} />, container);
+	});
+
+	for(let i=1; i<21; i++){
+		const row = container.firstChild.children[i];
+		expect(row.classList.contains("parity")).toBe((i-1)%2==0);
+	}
 });
