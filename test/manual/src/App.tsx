@@ -9,7 +9,7 @@ import explanationExceptions from "./explanation_exceptions.json";
 function App() {
     return (
     <div className="App">
-      <FeatureListVisualizer explanation={explanationExceptions as ExplanationObject} framing={"decision-class"} lct={"none"} thresholdBadge={-1} thresholdOmit={0.001} visualization={"badge"} />
+      <FeatureListVisualizer explanation={explanationExceptions as ExplanationObject} framing={"decision-class"} lct={"none"} thresholdBadge={-1} thresholdOmit={0.001} visualization={"bar"} />
     </div>
   );
 }

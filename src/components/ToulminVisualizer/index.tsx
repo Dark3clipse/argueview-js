@@ -36,7 +36,7 @@ export default class ToulminVisualizer extends React.Component<MyProps, MyState>
 
 	private get lrat(): string{
 		const lrat = this.props.explanation.explanation.support.sort((a, b)=>a.contribution-b.contribution)[0];
-		return lrat.value;
+		return (lrat?.value && lrat.value.length>0)?lrat.value:null;
 	}
 
 	public render() {
@@ -44,9 +44,11 @@ export default class ToulminVisualizer extends React.Component<MyProps, MyState>
 		const clsName = this.props.explanation.data.classes[cls];
 		return (<div className={[styles.root, this.props.className].join(' ')}>
 			<ToulminVisualizerItem title={"Decision"} value={clsName} />
-			<ToulminVisualizerItem title={"Leading rationale"} value={this.lrat} />
+			{this.lrat && this.lrat.length>0 &&
+			<ToulminVisualizerItem title={"Leading rationale"} value={this.lrat} />}
 			<ToulminVisualizerItem title={"Qualifier"} value={this.qualifier} />
-			<ToulminVisualizerItem title={"Backing"} value={this.props.explanation.backing} />
+			{this.props.explanation.backing && this.props.explanation.backing.length>0 &&
+			<ToulminVisualizerItem title={"Backing"} value={this.props.explanation.backing} />}
 		</div>);
 	}
 }
