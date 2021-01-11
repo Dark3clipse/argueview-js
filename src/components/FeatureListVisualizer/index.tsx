@@ -164,7 +164,8 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 			if (Math.abs(c.contribution) < thresholdOmit && f.name != "intercept"){
 				continue;
 			}
-			items.push(<FeatureListVisualizerItem key={`item-${i}`} explanation={explanation} framing={this.props.framing} lct={this.props.lct} feature={f} value={v} contribution={contribution} maxContribution={maxContribution} thresholdBadge={thresholdBadge} rationale={c?.value} visualization={this.props.visualization} parity={parity} />)
+			const rationale = (c?.value && c.value.length>0) ? c.value : null;
+			items.push(<FeatureListVisualizerItem key={`item-${i}`} explanation={explanation} framing={this.props.framing} lct={this.props.lct} feature={f} value={v} contribution={contribution} maxContribution={maxContribution} thresholdBadge={thresholdBadge} rationale={rationale} visualization={this.props.visualization} parity={parity} />)
 			parity = !parity;
 		}
 
