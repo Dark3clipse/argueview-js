@@ -2,6 +2,8 @@ node_modules
 /.idea
 /.directory
 /dist/*
+/work
 .env
 /test/argueview/
 /coverage/*
+/test/manual/src/explanation*.json

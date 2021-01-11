@@ -11,7 +11,7 @@
 }
 
 .top{
-	@include flexbox(row, space-between, flex-start);
+	@include flexbox(row, space-between, stretch);
 }
 .bottom{
 	@include flexbox(column, center, flex-start);
@@ -56,12 +56,15 @@ a.label{
 
 }
 
-.badge{
+.visualization{
 	width: 100%;
+}
+.bar{
+	height: 100%;
 }
 
 @include media(">750px"){
-	.root{
+	.topPadding{
 		padding: .5rem 0 .5rem 0;
 	}
 	.contribution{
@@ -80,11 +83,14 @@ a.label{
 		margin: 1.5rem 3rem 1.5rem 3rem;
 	}
 	.badge{
+		margin: .5rem 2rem;
+	}
+	.bar{
 		margin: 0 2rem;
 	}
 }
 @include media("<=750px", ">560px"){
-	.root{
+	.topPadding{
 		padding: .5rem 0 .5rem 0;
 	}
 	.contribution{
@@ -103,11 +109,14 @@ a.label{
 		margin: 1rem;
 	}
 	.badge{
+		margin: .5rem 0.5rem;
+	}
+	.bar{
 		margin: 0 0.5rem;
 	}
 }
 @include media("<=560px"){
-	.root{
+	.topPadding{
 		padding: .75rem 0 .75rem 0;
 	}
 	.contribution{
@@ -130,6 +139,9 @@ a.label{
 		margin: 1rem;
 	}
 	.badge{
+		margin: .75rem 0.5rem;
+	}
+	.bar{
 		margin: 0 0.5rem;
 	}
 }

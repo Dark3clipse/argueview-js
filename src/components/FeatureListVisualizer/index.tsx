@@ -1,14 +1,17 @@
 import React from "react";
+import ErrorMessage from "./../ErrorMessage";
 import styles from "./../FeatureListVisualizer/index.module.scss";
 import FeatureListVisualizerHeader from "./../FeatureListVisualizerHeader";
 import FeatureListVisualizerItem from "./../FeatureListVisualizerItem";
 import {Attack, ExplanationObject, Feature, Support} from "../../IExplanation";
+import {LineAwesomeLoader} from "./../../LineAwesomeLoader";
 
 
 export type SortBy = "index" | "contribution" | "name";
 export type SortDirection = "asc" | "desc";
-export type Framing = "original" | "positive" | "negative";
+export type Framing = "decision-class" | "positive" | "negative";
 export type LatentContinuousTargetDisplay = "none" | "label" | "anti-label";
+export type VisualizationType = "badge" | "bar";
 
 interface MyProps{
 	className?: string;
@@ -19,6 +22,7 @@ interface MyProps{
 	thresholdBadge?: number;
 	thresholdOmit?: number;
 	omitIntercept?: boolean;
+	visualization?: VisualizationType;
 
 	/** @deprecated Use `thresholdBadge` instead. */
 	threshold?: number;
@@ -35,10 +39,11 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 		source: 0,
 		framing: "positive",
 		lct: "label",
-		threshold: -1,
+		threshold: -2,
 		thresholdBadge: 0,
 		thresholdOmit: -1,
-		omitIntercept: false
+		omitIntercept: false,
+		visualization: "badge"
 	}
 
 	constructor(p){
@@ -54,6 +59,18 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 				e.explanation.attack.find((v)=>v.source==this.props.source && v.feature==f.index);
 	}
 
+	private sortFunctionContribution(explanation: ExplanationObject, dir:string, a: Feature, b: Feature): number {
+		const ac = this.findContribution(explanation, a)?.contribution || 0;
+		const bc = this.findContribution(explanation, b)?.contribution || 0;
+		const v = (bc - ac);
+		//console.log(`A: index=${a.index} contribution=${ac}  B: index=${b.index} contribution=${bc}  R: v=${v}`);
+		return (dir == "asc"?1:-1) * v;
+	};
+
+	public componentDidMount() {
+		LineAwesomeLoader();
+	}
+
 	public render() {
 
 		// set thresholds based on properties
@@ -61,7 +78,7 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 		let thresholdOmit = this.props.thresholdOmit;
 
 		// support old syntax
-		if (this.props.threshold != -1){
+		if (this.props.threshold != -2){
 			thresholdBadge = this.props.threshold;
 			thresholdOmit = -1;
 		}
@@ -101,42 +118,38 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 				value: explanation.explanation.base
 			});
 			const icp = explanation.explanation.base;
-			(icp > 0 ? explanation.explanation.support : explanation.explanation.attack).push({
+			explanation.explanation.support.push({
 				source: this.props.source,
 				feature: icp_index,
 				contribution: icp,
-				value: this.interceptValue(Math.sign(icp))
+				value: FeatureListVisualizer.interceptValue(Math.sign(icp))
 			});
 		}
 
+		// compute max contribution
+		const maxContribution = Math.abs(this.findContribution(explanation, features.sort((a, b) => this.sortFunctionContribution(explanation, "asc", a, b))[0]).contribution);
 
 		// sort features
 		let sortFunction: (a: Feature, b: Feature) => number;
 		switch(this.state.sort){
-			default:
 			case "index":
-				sortFunction = (a, b) => {
+				sortFunction = (a, b) =>{
 					return (this.state.sortDirection == "asc"?1:-1) * (a.index - b.index);
 				};
 				break;
 			case "contribution":
-				sortFunction = (a, b) => {
-					const ac = this.findContribution(explanation, a)?.contribution || 0;
-					const bc = this.findContribution(explanation, b)?.contribution || 0;
-					const v = (bc - ac);
-					//console.log(`A: index=${a.index} contribution=${ac}  B: index=${b.index} contribution=${bc}  R: v=${v}`);
-					return (this.state.sortDirection == "asc"?1:-1) * v;
-				};
+				sortFunction = (a, b) => this.sortFunctionContribution(explanation, this.state.sortDirection, a, b);
 				break;
 			case "name":
-				sortFunction = (a, b) => {
+				sortFunction = (a, b)=>{
 					return (this.state.sortDirection == "asc"?1:-1) * (a.name > b.name ? 1:-1);
-				};
+				}
 				break;
 		}
 		features.sort(sortFunction);
 
 		// generate feature list
+		let parity = true;
 		for (let i=0; i<features.length; i++){
 			const f = features[i];
 			if (typeof values[f.index] === "undefined"){
@@ -145,19 +158,37 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 			const v = values[f.index].value;
 			const c = this.findContribution(explanation, f);
 			let contribution = 0;
-			if (c?.contribution && Math.abs(c.contribution) >= thresholdBadge){
+			if (c?.contribution){
 				contribution = c.contribution;
 			}
 			if (Math.abs(c.contribution) < thresholdOmit && f.name != "intercept"){
 				continue;
 			}
-			items.push(<FeatureListVisualizerItem key={`item-${i}`} explanation={explanation} framing={this.props.framing} lct={this.props.lct} feature={f} value={v} contribution={contribution} rationale={c?.value} parity={i%2==0} />)
+			items.push(<FeatureListVisualizerItem key={`item-${i}`} explanation={explanation} framing={this.props.framing} lct={this.props.lct} feature={f} value={v} contribution={contribution} maxContribution={maxContribution} thresholdBadge={thresholdBadge} rationale={c?.value} visualization={this.props.visualization} parity={parity} />)
+			parity = !parity;
 		}
+
+		let error: boolean = false;
+		let errorMsg: string = "";
+		let errorAdditional: string = "";
+
+		// invalid input
+		if (!explanation.data.latent_continuous_target && this.props.lct != "none"){
+			error = true;
+			errorMsg = "Cannot render with a latent continuous target: not defined in explanation.";
+			errorAdditional = "If this explanation was created in Python, make sure you call ArgueView.latent_continuous_target() prior to saving your explanation.";
+		}
+
 
 		// render
 		return (<div className={[styles.root, this.props.className].join(' ')}>
-			<FeatureListVisualizerHeader sort={this.state.sort} sortDirection={this.state.sortDirection} update={this.update} />
-			{items}
+			{error &&
+			<ErrorMessage className={""} message={errorMsg} additional={errorAdditional} />}
+
+			{!error &&
+			<FeatureListVisualizerHeader sort={this.state.sort} sortDirection={this.state.sortDirection} update={this.update} />}
+
+			{!error && items}
 		</div>);
 	}
 
@@ -168,7 +199,7 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 		});
 	}
 
-	private interceptValue(sign: number): string{
+	private static interceptValue(sign: number): string{
 		return `The intercept's contribution is the contribution independent of the other features.`;
 	}
 }

@@ -6,7 +6,7 @@
 	"repository": "https://github.com/SophiaHadash/argueview-js",
 	"scripts": {
 		"build": "sh build/prebuild.sh && webpack --config build/webpack.dev.js && webpack --config build/webpack.prod.js && tsc --declaration --emitDeclarationOnly --outDir dist/typings",
-		"start": "cp test/explanation.json test/manual/src/explanation.json && cd test/manual && npm start",
+		"start": "cp test/explanation.json test/manual/src/explanation.json && cp test/explanation_negative.json test/manual/src/explanation_negative.json && cp test/explanation_exceptions.json test/manual/src/explanation_exceptions.json && cd test/manual && npm start" ,
 		"test": "jest"
 	},
 	"main": "dist/argueview",

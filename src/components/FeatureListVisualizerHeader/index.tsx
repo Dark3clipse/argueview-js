@@ -9,7 +9,7 @@ interface MyProps{
 	className?: string;
 	sort: SortBy;
 	sortDirection: SortDirection;
-	update?: (sort: SortBy, sortDirection: SortDirection) => void;
+	update: (sort: SortBy, sortDirection: SortDirection) => void;
 }
 
 interface MyState{
@@ -55,7 +55,6 @@ export default class FeatureListVisualizerHeader extends React.Component<MyProps
 	}
 
 	private click = (sort: SortBy) => {
-		if (!this.props.update) return;
 		if (this.props.sort == sort){
 			// only change direction!
 			this.props.update(this.props.sort, this.props.sortDirection=="asc"?"desc":"asc");
