@@ -26,7 +26,7 @@ it("renders with backing and grounds", () => {
 	act(() => {
 		render(<ToulminVisualizer explanation={explanation as ExplanationObject} />, container);
 	});
-	expect(container.textContent).toBe("DecisionYou are applicable for a loan.Leading rationaleYour credit history gives us confidence in your capabilities.QualifierThe class 'You are applicable for a loan.' is 77.28% more certain than the other possible classes.BackingSupported by Sophia Hadash, MSc from Jheronimus Academy of Data Science.");
+	expect(container.textContent).toBe("DecisionYou are applicable for a loan.Leading rationaleYou have a sufficient amount on your checking account.QualifierThe class 'You are applicable for a loan.' is 77.28% more certain than the other possible classes.BackingSupported by Sophia Hadash, MSc from Jheronimus Academy of Data Science.");
 });
 
 it("renders without backing and grounds", () => {
