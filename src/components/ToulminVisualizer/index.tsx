@@ -35,7 +35,7 @@ export default class ToulminVisualizer extends React.Component<MyProps, MyState>
 	}
 
 	private get lrat(): string{
-		const lrat = this.props.explanation.explanation.support.sort((a, b)=>a.contribution-b.contribution)[0];
+		const lrat = this.props.explanation.explanation.support.sort((a, b)=>b.contribution-a.contribution)[0];
 		return (lrat?.value && lrat.value.length>0)?lrat.value:null;
 	}
 
