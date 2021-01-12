@@ -23,7 +23,7 @@ export default class ErrorMessage extends React.Component<MyProps, MyState> {
 	}
 
 	public render() {
-		return (<div className={[this.props.className, styles.root].join(' ')}>
+		return (<div className={[this.props.className, styles.root, styles[this.props.level]].join(' ')}>
 			<ExclamationTriangleIcon className={styles.icon} />
 			<div className={styles.text}>
 				<div className={[styles.fontSizeContentMedium, styles.title].join(' ')}>{this.props.message}</div>
