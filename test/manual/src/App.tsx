@@ -9,12 +9,12 @@ import explanationNegative from "./explanation_negative.json";
 import explanationExceptions from "./explanation_exceptions.json";
 
 function App() {
-    return (
-    <div className="App">
-        <ToulminVisualizer explanation={explanation as ExplanationObject} />
-        <FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"decision-class"} lct={"none"} thresholdBadge={-1} thresholdOmit={0.001} visualization={"bar"} />
-    </div>
-  );
+	return (
+		<div className="App">
+			<ToulminVisualizer explanation={explanation as ExplanationObject} />
+			<FeatureListVisualizer explanation={explanation as ExplanationObject} framing={"decision-class"} lct={"none"} thresholdBadge={-1} thresholdOmit={0.001} visualization={"badge"} interactive={false} />
+		</div>
+	);
 }
 
 export default App;

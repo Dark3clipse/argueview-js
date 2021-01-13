@@ -20,6 +20,7 @@ interface MyProps{
 	lct?: LatentContinuousTargetDisplay;
 	visualization?: VisualizationType;
 	thresholdBadge: number;
+	interactive: boolean;
 }
 
 interface MyState{
@@ -46,10 +47,10 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 	}
 
 
-	constructor(p){
+	constructor(p: MyProps | Readonly<MyProps>){
 		super(p);
 		this.state = {
-			collapsed: false,
+			collapsed: !p.interactive,
 			hover: false
 		}
 	}
@@ -63,7 +64,7 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 					{this.props.visualization == "badge" && threshold &&
 					<Badge className={[styles.visualization, styles.badge].join(' ')} contribution={Math.abs(this.props.contribution)} label={d.label} sign={d.sign} framing={d.framing} />}
 					{this.props.visualization == "bar" &&
-					<Bar className={[styles.visualization, styles.bar].join(' ')} contribution={threshold?Math.abs(this.props.contribution):0} maxContribution={this.props.maxContribution} label={d.label} sign={d.sign} framing={d.framing} selected={this.state.collapsed || this.state.hover}/>}
+					<Bar className={[styles.visualization, styles.bar].join(' ')} contribution={threshold?Math.abs(this.props.contribution):0} maxContribution={this.props.maxContribution} label={d.label} sign={d.sign} framing={d.framing} selected={this.state.collapsed || this.state.hover || !this.props.interactive}/>}
 				</div>
 				<div className={[styles.label, styles.topPadding].join(' ')}>
 					<a className={styles.label}>{this.props.feature.name}</a>

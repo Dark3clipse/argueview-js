@@ -23,6 +23,7 @@ interface MyProps{
 	thresholdOmit?: number;
 	omitIntercept?: boolean;
 	visualization?: VisualizationType;
+	interactive?: boolean;
 
 	/** @deprecated Use `thresholdBadge` instead. */
 	threshold?: number;
@@ -43,7 +44,8 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 		thresholdBadge: 0,
 		thresholdOmit: -1,
 		omitIntercept: false,
-		visualization: "badge"
+		visualization: "badge",
+		interactive: true
 	}
 
 	constructor(p){
@@ -165,7 +167,7 @@ export default class FeatureListVisualizer extends React.Component<MyProps, MySt
 				continue;
 			}
 			const rationale = (c?.value && c.value.length>0) ? c.value : null;
-			items.push(<FeatureListVisualizerItem key={`item-${i}`} explanation={explanation} framing={this.props.framing} lct={this.props.lct} feature={f} value={v} contribution={contribution} maxContribution={maxContribution} thresholdBadge={thresholdBadge} rationale={rationale} visualization={this.props.visualization} parity={parity} />)
+			items.push(<FeatureListVisualizerItem key={`item-${i}`} explanation={explanation} framing={this.props.framing} lct={this.props.lct} feature={f} value={v} contribution={contribution} maxContribution={maxContribution} thresholdBadge={thresholdBadge} rationale={rationale} visualization={this.props.visualization} parity={parity} interactive={this.props.interactive} />)
 			parity = !parity;
 		}
 
