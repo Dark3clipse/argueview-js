@@ -9,18 +9,18 @@
 }
 
 .positive{
-	background-color: #1ed760;
-	border-color: #1db954;
+	/*background-color: #1f77b4;
+	border-color: darken(#1f77b4, 30%);*/
 }
 
 .negative{
-	background-color: #ff7373;
-	border-color: #ce3737;
+	/*background-color: #FF7F0E;
+	border-color: darken(#FF7F0E, 30%);*/
 }
 
 .neutral{
-	background-color: #0088ff;
-	border-color: #0055ff;
+	/*background-color: #DFE81A;
+	border-color: darken(#DFE81A, 30%);*/
 }
 
 @include media(">750px"){

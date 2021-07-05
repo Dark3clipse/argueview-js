@@ -1,4 +1,5 @@
 import React from "react";
+import {pSBC} from "./../../pSBC";
 import styles from "./../Badge/index.module.scss";
 
 
@@ -10,6 +11,7 @@ interface MyProps{
 	label: string;
 	framing?: BadgeDirection;
 	sign?: number;
+	colors: string[];
 }
 
 interface MyState{
@@ -29,7 +31,16 @@ export default class Badge extends React.Component<MyProps, MyState> {
 	}
 
 	public render() {
-		return (<div className={[styles.root, this.props.className, styles[this.props.framing]].join(' ')}>
+		let c = this.props.colors[1];
+		switch(this.props.framing){
+			case "positive":
+				c = this.props.colors[0];
+				break;
+			case "negative":
+				c = this.props.colors[2];
+				break;
+		}
+		return (<div className={[styles.root, this.props.className, styles[this.props.framing]].join(' ')} style={{backgroundColor: c, borderColor: pSBC(-0.3, c)}}>
 			<a>{this.text()}</a>
 		</div>);
 	}

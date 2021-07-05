@@ -21,6 +21,7 @@ interface MyProps{
 	visualization?: VisualizationType;
 	thresholdBadge: number;
 	interactive: boolean;
+	colors: string[];
 }
 
 interface MyState{
@@ -62,9 +63,9 @@ export default class FeatureListVisualizerItem extends React.Component<MyProps, 
 			<div className={styles.top}>
 				<div className={styles.contribution}>
 					{this.props.visualization == "badge" && threshold &&
-					<Badge className={[styles.visualization, styles.badge].join(' ')} contribution={Math.abs(this.props.contribution)} label={d.label} sign={d.sign} framing={d.framing} />}
+					<Badge className={[styles.visualization, styles.badge].join(' ')} contribution={Math.abs(this.props.contribution)} label={d.label} sign={d.sign} framing={d.framing} colors={this.props.colors} />}
 					{this.props.visualization == "bar" &&
-					<Bar className={[styles.visualization, styles.bar].join(' ')} contribution={threshold?Math.abs(this.props.contribution):0} maxContribution={this.props.maxContribution} label={d.label} sign={d.sign} framing={d.framing} selected={this.state.collapsed || this.state.hover || !this.props.interactive}/>}
+					<Bar className={[styles.visualization, styles.bar].join(' ')} contribution={threshold?Math.abs(this.props.contribution):0} maxContribution={this.props.maxContribution} label={d.label} sign={d.sign} framing={d.framing} selected={this.state.collapsed || this.state.hover || !this.props.interactive} colors={this.props.colors}/>}
 				</div>
 				<div className={[styles.label, styles.topPadding].join(' ')}>
 					<a className={styles.label}>{this.props.feature.name}</a>
