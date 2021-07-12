@@ -1,0 +1,40 @@
+@import "src/assets/scss/config-styles";
+
+
+.root{
+	@include flexbox(row, stretch, center);
+}
+
+.left{
+	@include flexbox(column, flex-start, center);
+	width: 50%;
+}
+
+.right{
+	@include flexbox(column, flex-start, flex-start);
+	width: 50%;
+}
+
+.descriptionLabel{
+	@include flexbox(row, center, flex-start);
+	margin: 3rem 0 0 0;
+	width: 100%;
+}
+.descriptionNoteLabel{
+	@include flexbox(row, center, flex-start);
+	margin: 0 3rem 0 3rem;
+	width: auto;
+}
+.regressionLabel{
+	@include flexbox(row, center, flex-start);
+	margin: 0 3rem 0 3rem;
+	width: 100%;
+}
+.framingLabel{
+	@include flexbox(row, center, flex-start);
+	margin: 0 3rem 0 3rem;
+	width: 100%;
+}
+.framingLabel a{
+	padding: .125rem;
+}

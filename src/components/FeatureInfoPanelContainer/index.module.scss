@@ -1,0 +1,13 @@
+@import "src/assets/scss/config-styles";
+
+
+.root{
+	padding: 1.5rem;
+	text-align: left;
+
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 25rem);
+	grid-template-rows: auto;
+	grid-column-gap: 0.5rem;
+	grid-row-gap: 0;
+}

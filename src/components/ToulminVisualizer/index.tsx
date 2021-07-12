@@ -8,6 +8,7 @@ import {ExplanationObject} from "../../IExplanation";
 interface MyProps{
 	className?: string;
 	explanation: ExplanationObject;
+	components?: string[];
 }
 
 interface MyState{
@@ -16,7 +17,8 @@ interface MyState{
 
 export default class ToulminVisualizer extends React.Component<MyProps, MyState> {
 	public static defaultProps = {
-		className: ""
+		className: "",
+		components: ["all"]
 	}
 
 
@@ -42,12 +44,15 @@ export default class ToulminVisualizer extends React.Component<MyProps, MyState>
 	public render() {
 		const cls = argmax(this.props.explanation.case.class_proba);
 		const clsName = this.props.explanation.data.classes[cls];
+		const c = this.props.components;
 		return (<div className={[styles.root, this.props.className].join(' ')}>
-			<ToulminVisualizerItem title={"Decision"} value={clsName} />
-			{this.lrat && this.lrat.length>0 &&
+			{(c.includes("all") || c.includes("decision")) &&
+			<ToulminVisualizerItem title={"Decision"} value={clsName} />}
+			{(c.includes("all") || c.includes("rationale")) && this.lrat && this.lrat.length>0 &&
 			<ToulminVisualizerItem title={"Leading rationale"} value={this.lrat} />}
-			<ToulminVisualizerItem title={"Qualifier"} value={this.qualifier} />
-			{this.props.explanation.backing && this.props.explanation.backing.length>0 &&
+			{(c.includes("all") || c.includes("qualifier")) &&
+			<ToulminVisualizerItem title={"Qualifier"} value={this.qualifier} />}
+			{(c.includes("all") || c.includes("backing")) && this.props.explanation.backing && this.props.explanation.backing.length>0 &&
 			<ToulminVisualizerItem title={"Backing"} value={this.props.explanation.backing} />}
 		</div>);
 	}
