@@ -1,5 +1,5 @@
 import React from "react";
-import {argmax} from "src/argmax";
+import {argmax} from "../../argmax";
 import FeatureInfoPanelContainer from "../FeatureInfoPanelContainer/index";
 import FeatureListVisualizer, {
 	Framing,
